@@ -3,6 +3,7 @@ Created on 2017年2月11日
 
 @author: Junyang HE
 '''
+from matplotlib.pyplot import grid
 
 # generate line function
 def genLineInDataframe(y, df):
@@ -200,33 +201,49 @@ def plotIndicator(df, ind, maDays = [5, 10, 20, 40]):
             if len(nameList) == 0 :
                 pass
             elif len(nameList) == 1 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0]]].plot()
+                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0]]].plot(grid = True, figsize = (10, 5))
             elif len(nameList) == 2 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1]]].plot()
+                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1]]].plot(grid = True, figsize = (10, 5))
             elif len(nameList) == 3 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2]]].plot()
+                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2]]].plot(grid = True, figsize = (10, 5))
             elif len(nameList) == 4 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3]]].plot()
+                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3]]].plot(grid = True, figsize = (10, 5))
             elif len(nameList) == 5 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4]]].plot()
+                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4]]].plot(grid = True, figsize = (10, 5))
             elif len(nameList) == 6 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5]]].plot()
+                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5]]].plot(grid = True, figsize = (10, 5))
             elif len(nameList) == 7 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5],nameList[6]]].plot()
+                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5],nameList[6]]].plot(grid = True, figsize = (10, 5))
         else :
-            df.loc[cd.startShowing : cd.end, ['Adj Close','MA for 5 days','MA for 10 days','MA for 20 days','MA for 40 days']].plot()
+            df.loc[cd.startShowing : cd.end, ['Adj Close','MA for 5 days','MA for 10 days','MA for 20 days','MA for 40 days']].plot(grid = True, figsize = (10, 5))
     elif ind == 'Bollinger':
-        df.loc[cd.startShowing : cd.end, ['Adj Close','bollinger upper','bollinger ave','bollinger lower']].plot()
+        df.loc[cd.startShowing : cd.end, ['Adj Close','bollinger upper','bollinger ave','bollinger lower']].plot(grid = True, figsize = (10, 5))
     elif ind == 'RS':
-        df.loc[cd.startShowing : cd.end, ['Adj Close', 'resistance', 'support']].plot()
+        df.loc[cd.startShowing : cd.end, ['Adj Close', 'resistance', 'support']].plot(grid = True, figsize = (10, 5))
     elif ind == 'MACD':
-        df.loc[cd.startShowing : cd.end, ['Adj Close', 'dif', 'MACD']].plot(secondary_y = ["dif", "MACD"])    # use different scales
+        df.loc[cd.startShowing : cd.end, ['Adj Close', 'dif', 'MACD']].plot(grid = True, figsize = (10, 5), secondary_y = ["dif", "MACD"])    # use different scales
     elif ind == 'RSI':
-        df.loc[cd.startShowing : cd.end, ['rsi', '30 Line', '70 Line']].plot()
+        df.loc[cd.startShowing : cd.end, ['rsi', '30 Line', '70 Line']].plot(grid = True, figsize = (10, 5))
     elif ind == 'Stoschastic':
-        df.loc[cd.startShowing : cd.end, ['k fast', 'd fast', '20 Line', '80 Line']].plot()
+        df.loc[cd.startShowing : cd.end, ['k fast', 'd fast', '20 Line', '80 Line']].plot(grid = True, figsize = (10, 5))
     elif ind == 'Adj close':
-        df['Adj Close'].plot(grid = True)
+        df['Adj Close'].plot(grid = True, figsize = (10, 5))
     elif ind == 'Close':
-        df['Close'].plot(grid = True)
+        df['Close'].plot(grid = True, figsize = (10, 5))
     
+# get data from yahoo api
+def readDataFromNet(stock):
+    from pandas_datareader import data      # for importing data
+    import constDaytime as cd
+    df = None
+    if stock == 'airbus':
+        df = data.DataReader("AIR.PA", "yahoo", cd.start, cd.end) 
+    elif stock == 'sopra':
+        df = data.DataReader("SOP.PA", "yahoo", cd.start, cd.end)
+    elif stock == 'biomerieux':
+        df = data.DataReader("FP.PA", "yahoo", cd.start, cd.end)
+    elif stock == 'oreal':
+        df = data.DataReader("OR.PA", "yahoo", cd.start, cd.end)
+    elif stock == 'total':
+        df = data.DataReader("BIM.PA", "yahoo", cd.start, cd.end)
+    return df
