@@ -1,3 +1,9 @@
+.env/
+srvEnv.bak/
+test.ini.bak
+get-pip.py.bak
+logs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
