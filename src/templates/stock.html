@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="index, 主页">
+    <meta name="description" content="某主页">
+    <meta name="robots" content="index">
+    <title>某主页</title>
+    <title></title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+
+<body>
+    <h1>stock : {{ name }}</h1>
+    {% autoescape false %}
+    <h2>Resistance and Support</h2>
+    {{ fig[0] }}
+    <h2>Bollinger Bands</h2>
+    {{ fig[1] }}
+    <h2>Moving average</h2>
+    {{ fig[2] }}
+    <h2>MACD</h2>
+    {{ fig[3] }}
+    <h2>RSI</h2>
+    {{ fig[4] }}
+    <h2>stoschastic</h2>
+    {{ fig[5] }} {% endautoescape %}
+</body>

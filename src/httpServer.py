@@ -5,7 +5,8 @@ Created on 2017 2 11
 '''
 from genIndicator import plotIndicator
 from flask import Flask, url_for, redirect, render_template, request
-app = Flask(__name__, root_path = '/home/wwwroot/catprogrammer.com/stockchooser')
+#app = Flask(__name__, root_path = '/home/wwwroot/catprogrammer.com/stockchooser')
+app = Flask(__name__)
 app.debug = True
 
 @app.route('/')
@@ -16,7 +17,7 @@ def index():
 def sc():
 #    return render_template('index.html')
     return 'b'
-	
+
 @app.route('/submit', methods=['POST', 'GET'])
 def submit(name=None):
     if request.method == 'POST':
