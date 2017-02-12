@@ -1,38 +1,22 @@
+'''
+Created on 2017 2 11 
+
+@author: Junyang HE
+'''
 from genIndicator import plotIndicator
-
-'''
-import http.server
-import socketserver
-
-PORT = 8000
-
-#Handler = http.server.SimpleHTTPRequestHandler
-Handler = http.server.CGIHTTPRequestHandler
-
-httpd = socketserver.TCPServer(("", PORT), Handler)
-httpd.server_name = "test"
-httpd.server_port = PORT
-
-print("serving at port", PORT)
-httpd.serve_forever()
-'''
-
 from flask import Flask, url_for, redirect, render_template, request
 app = Flask(__name__, root_path = '/home/wwwroot/catprogrammer.com/stockchooser')
-
 app.debug = True
 
 @app.route('/')
 def index():
     return render_template('index.html')
-#    return 'a'
 
 @app.route('/stockchooser')
 def sc():
 #    return render_template('index.html')
     return 'b'
-
-
+	
 @app.route('/submit', methods=['POST', 'GET'])
 def submit(name=None):
     if request.method == 'POST':

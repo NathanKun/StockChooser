@@ -1,9 +1,9 @@
 '''
-Created on 2017 2 11
+Created on 2017 2 11 
 
 @author: Junyang HE
 '''
-#from matplotlib.pyplot import grid
+from matplotlib.pyplot import grid
 
 # generate line function
 def genLineInDataframe(y, df):
@@ -106,13 +106,13 @@ def gentrends(x, window=1/3.0, charts=True):
         grid()
         show()
 
-    return trends, maxline, minline
+    return trends, maxline, minline, maxslope, minslope
     
 # calculate resistance and support
 def genRS(df) :
     import constDaytime as cd
 
-    _, df.loc[cd.trendLinesStartDate : cd.end, 'resistance'], df.loc[cd.trendLinesStartDate : cd.end, 'support'] \
+    _, df.loc[cd.trendLinesStartDate : cd.end, 'resistance'], df.loc[cd.trendLinesStartDate : cd.end, 'support'], _, _ \
         = gentrends(df.loc[cd.trendLinesStartDate : cd.end, 'Adj Close'], window = 1.0/2, charts = False)   #generate trend lines, ignore first return value
         
         
