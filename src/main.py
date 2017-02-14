@@ -29,7 +29,6 @@ Created on 2017 2 9
 '''
 
              
-from pandas_datareader import data      # for importing data
 import matplotlib.pyplot as plt, mpld3  # 2D plotting library
 import genIndicator as gi
 import constDaytime as cd
@@ -37,49 +36,33 @@ import constDaytime as cd
 
 
 if __name__ == '__main__':
-    print("cd.start!")
+    #import sys
+    #print(sys.path)
     
+    print("start!")
     #plt.rcParams['figure.figsize'] = (15, 9)   # Change the size of plots
-    
-        
 
 
     # get 5 stocks data
     print("Getting data!")
-    airbus = data.DataReader("AIR.PA", "yahoo", cd.start, cd.end) # get data from yahoo api
-    sopra = data.DataReader("SOP.PA", "yahoo", cd.start, cd.end)
-    #total = data.DataReader("FP.PA", "yahoo", cd.start, cd.end)
-    #oreal = data.DataReader("OR.PA", "yahoo", cd.start, cd.end)
-    #biome = data.DataReader("BIM.PA", "yahoo", cd.start, cd.end)
-    
+    airbus = gi.getAndGen('airbus')
+    biomerieux = gi.getAndGen('biomerieux')
+    sopra = gi.getAndGen('sopra')
+    total = gi.getAndGen('total')
+    oreal = gi.getAndGen('oreal')
 
-        
-    # DataFrame as parameter will be modified, so no need to return
-    gi.genLines(sopra)
-    gi.genMA(sopra, [15,30,100])
-    gi.genBollinger(sopra)
-    gi.genRS(sopra)
-    gi.genMACD(sopra)
-    gi.genRSI(sopra)
-    gi.genStochastic(sopra)
+    import analyser
+    #analyser.analyseRS(airbus)
+    #analyser.analyseRSI(airbus)
+    #analyser.analyseStochastic(airbus)
+    print(analyser.analyseRS(biomerieux))
     
-    gi.genAll(airbus)
-    
-    gi.plotIndicator(sopra, 'MA', [15,30,100])
-    gi.plotIndicator(airbus, 'Adj close')
-    
+    gi.plotIndicator(airbus, 'MACD')
     #sopra.loc[cd.startShowing : cd.end, ['Close']].plot()
     
-    
-    #print(mpld3.fig_to_html(plt.gcf()))
-    #import sys
-    #print(sys.path)
+    gi.plotIndicator(biomerieux, 'RS')
+    plt.show()
     
     
-    #plt.show()
-    
-    
-    import analyser
-    analyser.analyseRS(sopra)
     
     print("End!")

@@ -9,6 +9,7 @@ import datetime
 
 start = datetime.datetime(datetime.datetime.now().year-2,datetime.datetime.now().month,datetime.datetime.now().day) # data start day
 end = datetime.date.today() # data end day, period of 2 year
+yesterday = datetime.datetime(datetime.datetime.now().year,datetime.datetime.now().month,datetime.datetime.now().day - 1) # data end day, period of 2 year
 startShowing = datetime.datetime(datetime.datetime.now().year-1,datetime.datetime.now().month,datetime.datetime.now().day)  # start showing graph day, period 1 year
 
 trendLinesStartYear = datetime.datetime.now().year;     # trend lines for 4 month, calculate start day and month

@@ -151,7 +151,7 @@ def genRSI(df):
     
     rs = rolUp / rolDown
     rsi = 100.0 - (100.0 / (1.0 + rs))
-    df['rsi'] = rsi
+    df['RSI'] = rsi
         
 
 # calculate stochastic
@@ -170,14 +170,15 @@ def stochastic(stockHigh, stockLow, stockClose, p1, p2, p3, version):
             
     k *= 100
     d *= 100
+    j = 3*k - 2*d
     #ds = k.ewm(min_periods = p3, alpha = 1.0/3).mean()   # calculate %d ? $d slow
         
-    return k, d
+    return k, d, j
 
 # generate stochastic fast and slow
 def genStochastic(df):
-    df['k slow'], df['d slow'] = stochastic(df['High'], df['Low'], df['Close'], 14, 3, 5, 'slow')   # boursorama : Stochastique lent (14,3,5)
-    df['k fast'], df['d fast'] = stochastic(df['High'], df['Low'], df['Close'], 1, 1, 5, 'fast') # boursorama : Stochastique rapide (1,1,5)
+    df['k slow'], df['d slow'], df['j slow'] = stochastic(df['High'], df['Low'], df['Close'], 14, 3, 5, 'slow')   # boursorama : Stochastique lent (14,3,5)
+    df['k fast'], df['d fast'], df['j fast'] = stochastic(df['High'], df['Low'], df['Close'], 1, 1, 5, 'fast') # boursorama : Stochastique rapide (1,1,5)
         
 
 def genAll(df):
@@ -223,9 +224,9 @@ def plotIndicator(df, ind, maDays = [5, 10, 20, 40]):
     elif ind == 'MACD':
         df.loc[cd.startShowing : cd.end, ['Adj Close', 'dif', 'MACD']].plot(grid = True, figsize = (10, 5), secondary_y = ["dif", "MACD"])    # use different scales
     elif ind == 'RSI':
-        df.loc[cd.startShowing : cd.end, ['rsi', '30 Line', '70 Line']].plot(grid = True, figsize = (10, 5))
+        df.loc[cd.startShowing : cd.end, ['RSI', '30 Line', '70 Line']].plot(grid = True, figsize = (10, 5))
     elif ind == 'Stoschastic':
-        df.loc[cd.startShowing : cd.end, ['k fast', 'd fast', '20 Line', '80 Line']].plot(grid = True, figsize = (10, 5))
+        df.loc[cd.startShowing : cd.end, ['k slow', 'd slow', 'j slow', '20 Line', '80 Line']].plot(grid = True, figsize = (10, 5))
     elif ind == 'Adj close':
         df['Adj Close'].plot(grid = True, figsize = (10, 5))
     elif ind == 'Close':
@@ -246,4 +247,10 @@ def readDataFromNet(stock):
         df = data.DataReader("OR.PA", "yahoo", cd.start, cd.end)
     elif stock == 'total':
         df = data.DataReader("BIM.PA", "yahoo", cd.start, cd.end)
+    return df
+
+# get data from net and gen all indicators
+def getAndGen(stock):
+    df = readDataFromNet(stock)
+    genAll(df)
     return df
