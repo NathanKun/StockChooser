@@ -28,25 +28,35 @@ def analyseRS(df):
     _, resistance, support, maxslope, minslope = gi.gentrends(df.loc[cd.trendLinesStartDate : cd.end, 'Adj Close'], window = 1.0/2, charts = False)
     delta = df['resistance'] - df['support']
     
+    result = 0
+    
     # rule 1
     if maxslope > 0 and minslope > 0 :
         print('trends going up')
+        result += 0.3
     elif maxslope < 0 and minslope < 0 :
         print('trends going down')
+        result -= 0.3
         
     # rule 2
     if (0.9 <= df['Adj close'][cd.end] - df['resistance'][cd.end]) / delta[cd.end] <= 1 :
         print('price is going to touch resistance => price will go down')
+        result -= 0.6
     
     # rule 3
     if (0 <= df['Adj close'][cd.end] - df['support'][cd.end]) / delta[cd.end] <= 0.1 :
         print('price is going to touch support => price will go up')
+        result += 0.6
         
     # rule 4
     if df['Adj close'][cd.end] > df['resistance'][cd.end]
         print('price is over resistance')
         if df.iat[len(df.index), ['Adj close']] > df.iat[len(df.index) - 1, ['Adj close']] :
             print('and price is still going up')
+            result += 0.7
+        else :
+            print('but price is going down')
+            result += 0.2
     go up')
         
     # rule 5
@@ -54,5 +64,9 @@ def analyseRS(df):
         print('price is under support')
         if df.iat[len(df.index), ['Adj close']] < df.iat[len(df.index) - 1, ['Adj close']] :
             print('and price is still going down')
+            result -= 0.7
+        else :
+            print('but price is going up')
+            result += 0.3
     
-    return 0
+    return result
