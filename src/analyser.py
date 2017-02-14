@@ -5,14 +5,54 @@ Created on 2017 2 12
 '''
 def analyseRS(df):
     '''
+    Analyse:
+    1. both trends going up => price going up
+    2. price is going to touch resistance => price will go down
+    3. price is going to touch support => price will go up
+    4. price is over resistance => price will go up
+    5. price is under support => price will go down
+    
+    Math:
     delta = resistance - support
-    price(t1) - support(t1) < 0 => Going down, sell
-    price(t1) - resistance(t1) > 0 => Going up, buy
+    1. maxslope > 0 and minslope > 0 => price going up
+       maxslope < 0 and minslope < 0 => price going down
+    2. (price(t) - support(t)) / delta > 90% => price is going to touch resistance => price will go down
+    3. (price(t) - support(t)) / delta < 10% => price is going to touch support => price will go up
+    4. price(t) > resistance(t) && price is going up => price is over resistance => price will go up
+    5. price(t) < resistance(t) && price is going down  => price is under support => price will go down
     
     '''
+    
     import genIndicator as gi
     import constDaytime as cd
-    _, _, _, maxslope, minslope = gi.gentrends(df.loc[cd.trendLinesStartDate : cd.end, 'Adj Close'], window = 1.0/2, charts = False)
+    _, resistance, support, maxslope, minslope = gi.gentrends(df.loc[cd.trendLinesStartDate : cd.end, 'Adj Close'], window = 1.0/2, charts = False)
+    delta = df['resistance'] - df['support']
+    
+    # rule 1
     if maxslope > 0 and minslope > 0 :
-        print('ok')
+        print('trends going up')
+    elif maxslope < 0 and minslope < 0 :
+        print('trends going down')
+        
+    # rule 2
+    if (0.9 <= df['Adj close'][cd.end] - df['resistance'][cd.end]) / delta[cd.end] <= 1 :
+        print('price is going to touch resistance => price will go down')
+    
+    # rule 3
+    if (0 <= df['Adj close'][cd.end] - df['support'][cd.end]) / delta[cd.end] <= 0.1 :
+        print('price is going to touch support => price will go up')
+        
+    # rule 4
+    if df['Adj close'][cd.end] > df['resistance'][cd.end]
+        print('price is over resistance')
+        if df.iat[len(df.index), ['Adj close']] > df.iat[len(df.index) - 1, ['Adj close']] :
+            print('and price is still going up')
+    go up')
+        
+    # rule 5
+    if df['Adj close'][cd.end] < df['support'][cd.end]
+        print('price is under support')
+        if df.iat[len(df.index), ['Adj close']] < df.iat[len(df.index) - 1, ['Adj close']] :
+            print('and price is still going down')
+    
     return 0
