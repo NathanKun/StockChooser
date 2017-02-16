@@ -180,63 +180,66 @@ def genStochastic(df):
     df['k slow'], df['d slow'], df['j slow'] = stochastic(df['High'], df['Low'], df['Close'], 14, 3, 5, 'slow')   # boursorama : Stochastique lent (14,3,5)
     df['k fast'], df['d fast'], df['j fast'] = stochastic(df['High'], df['Low'], df['Close'], 1, 1, 5, 'fast') # boursorama : Stochastique rapide (1,1,5)
         
-
+# generate all indicators
 def genAll(df):
-    genLines(df)
-    genMA(df, [5, 10, 20, 40])
-    genBollinger(df)
-    genMACD(df)
-    genRS(df)
-    genRSI(df)
-    genStochastic(df)
+    if not isinstance(df, str) :
+        genLines(df)
+        genMA(df, [5, 10, 20, 40])
+        genBollinger(df)
+        genMACD(df)
+        genRS(df)
+        genRSI(df)
+        genStochastic(df)
+    else : pass
     
-
+# plot a indicator
 def plotIndicator(df, ind, maDays = [5, 10, 20, 40]):
-    import constDaytime as cd
-    if ind == 'MA':
-        if maDays != [5, 10, 20, 40]:   
-            nameList = []
-            for ma in maDays:
-                columnName = "MA for %s days" %(str(ma))
-                nameList.append(columnName)
-            if len(nameList) == 0 :
-                pass
-            elif len(nameList) == 1 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0]]].plot(grid = True, figsize = (10, 5))
-            elif len(nameList) == 2 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1]]].plot(grid = True, figsize = (10, 5))
-            elif len(nameList) == 3 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2]]].plot(grid = True, figsize = (10, 5))
-            elif len(nameList) == 4 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3]]].plot(grid = True, figsize = (10, 5))
-            elif len(nameList) == 5 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4]]].plot(grid = True, figsize = (10, 5))
-            elif len(nameList) == 6 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5]]].plot(grid = True, figsize = (10, 5))
-            elif len(nameList) == 7 :
-                df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5],nameList[6]]].plot(grid = True, figsize = (10, 5))
-        else :
-            df.loc[cd.startShowing : cd.end, ['Adj Close','MA for 5 days','MA for 10 days','MA for 20 days','MA for 40 days']].plot(grid = True, figsize = (10, 5))
-    elif ind == 'Bollinger':
-        df.loc[cd.startShowing : cd.end, ['Adj Close','bollinger upper','bollinger ave','bollinger lower']].plot(grid = True, figsize = (10, 5))
-    elif ind == 'RS':
-        df.loc[cd.startShowing : cd.end, ['Adj Close', 'resistance', 'support']].plot(grid = True, figsize = (10, 5))
-    elif ind == 'MACD':
-        df.loc[cd.startShowing : cd.end, ['Adj Close', 'dif', 'MACD']].plot(grid = True, figsize = (10, 5), secondary_y = ["dif", "MACD"])    # use different scales
-    elif ind == 'RSI':
-        df.loc[cd.startShowing : cd.end, ['RSI', '30 Line', '70 Line']].plot(grid = True, figsize = (10, 5))
-    elif ind == 'Stoschastic':
-        df.loc[cd.startShowing : cd.end, ['k slow', 'd slow', 'j slow', '20 Line', '80 Line']].plot(grid = True, figsize = (10, 5))
-    elif ind == 'Adj close':
-        df['Adj Close'].plot(grid = True, figsize = (10, 5))
-    elif ind == 'Close':
-        df['Close'].plot(grid = True, figsize = (10, 5))
+    if not isinstance(df, str) :
+        import constDaytime as cd
+        if ind == 'MA':
+            if maDays != [5, 10, 20, 40]:   
+                nameList = []
+                for ma in maDays:
+                    columnName = "MA for %s days" %(str(ma))
+                    nameList.append(columnName)
+                if len(nameList) == 0 :
+                    pass
+                elif len(nameList) == 1 :
+                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0]]].plot(grid = True, figsize = (10, 5))
+                elif len(nameList) == 2 :
+                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1]]].plot(grid = True, figsize = (10, 5))
+                elif len(nameList) == 3 :
+                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2]]].plot(grid = True, figsize = (10, 5))
+                elif len(nameList) == 4 :
+                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3]]].plot(grid = True, figsize = (10, 5))
+                elif len(nameList) == 5 :
+                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4]]].plot(grid = True, figsize = (10, 5))
+                elif len(nameList) == 6 :
+                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5]]].plot(grid = True, figsize = (10, 5))
+                elif len(nameList) == 7 :
+                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5],nameList[6]]].plot(grid = True, figsize = (10, 5))
+            else :
+                df.loc[cd.startShowing : cd.end, ['Adj Close','MA for 5 days','MA for 10 days','MA for 20 days','MA for 40 days']].plot(grid = True, figsize = (10, 5))
+        elif ind == 'Bollinger':
+            df.loc[cd.startShowing : cd.end, ['Adj Close','bollinger upper','bollinger ave','bollinger lower']].plot(grid = True, figsize = (10, 5))
+        elif ind == 'RS':
+            df.loc[cd.startShowing : cd.end, ['Adj Close', 'resistance', 'support']].plot(grid = True, figsize = (10, 5))
+        elif ind == 'MACD':
+            df.loc[cd.startShowing : cd.end, ['Adj Close', 'dif', 'MACD']].plot(grid = True, figsize = (10, 5), secondary_y = ["dif", "MACD"])    # use different scales
+        elif ind == 'RSI':
+            df.loc[cd.startShowing : cd.end, ['RSI', '30 Line', '70 Line']].plot(grid = True, figsize = (10, 5))
+        elif ind == 'Stochastic':
+            df.loc[cd.startShowing : cd.end, ['k slow', 'd slow', 'j slow', '20 Line', '80 Line']].plot(grid = True, figsize = (10, 5))
+        elif ind == 'Adj close':
+            df['Adj Close'].plot(grid = True, figsize = (10, 5))
+        elif ind == 'Close':
+            df['Close'].plot(grid = True, figsize = (10, 5))
+    else : pass
     
 # get data from yahoo api
 def readDataFromNet(stock):
     from pandas_datareader import data      # for importing data
     import constDaytime as cd
-    df = None
     if stock == 'airbus':
         df = data.DataReader("AIR.PA", "yahoo", cd.start, cd.end) 
     elif stock == 'sopra':
@@ -247,10 +250,16 @@ def readDataFromNet(stock):
         df = data.DataReader("OR.PA", "yahoo", cd.start, cd.end)
     elif stock == 'total':
         df = data.DataReader("BIM.PA", "yahoo", cd.start, cd.end)
+    else:
+        try :
+            df = data.DataReader(stock, "yahoo", cd.start, cd.end)
+        except :
+            df = "Read data failed."    # read from yahoo failed
     return df
 
-# get data from net and gen all indicators
+# get data from Internet and generate all indicators
 def getAndGen(stock):
     df = readDataFromNet(stock)
-    genAll(df)
+    if not isinstance(df, str) :
+        genAll(df)
     return df

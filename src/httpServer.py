@@ -31,28 +31,42 @@ def sc():
 @app.route('/submit', methods=['POST', 'GET'])
 def submit(name=None):
     if request.method == 'POST':
-        name = request.form['stockName']
-        ticker = request.form['stockList']
+        if 'stockName' in request.form :
+            name = request.form['stockName']
+        else :
+            name = request.form['stockList']
         
         import genIndicator as gi
-        df = gi.readDataFromNet(name)
-        gi.genAll(df)
+        df = gi.getAndGen(name)
         
-        import matplotlib.pyplot as plt, mpld3  # 2D plotting library
-        plotIndicator(df, 'RS')
-        rs = mpld3.fig_to_html(plt.gcf())
-        plotIndicator(df, 'Bollinger')
-        bollinger= mpld3.fig_to_html(plt.gcf())
-        plotIndicator(df, 'MA')
-        ma = mpld3.fig_to_html(plt.gcf())
-        plotIndicator(df, 'MACD')
-        macd = mpld3.fig_to_html(plt.gcf())
-        plotIndicator(df, 'RSI')
-        rsi = mpld3.fig_to_html(plt.gcf())
-        plotIndicator(df, 'Stoschastic')
-        stoschastic = mpld3.fig_to_html(plt.gcf())
-        fig = [rs, bollinger, ma, macd, rsi, stoschastic]
-    return render_template('stock.html', ticker = ticker, name = name, fig = fig)
+        
+        if not isinstance(df, str) :
+            import matplotlib.pyplot as plt, mpld3  # 2D plotting library
+            plotIndicator(df, 'RS')
+            rs = mpld3.fig_to_html(plt.gcf())
+            plt.close()
+            plotIndicator(df, 'Bollinger')
+            bollinger= mpld3.fig_to_html(plt.gcf())
+            plt.close()
+            plotIndicator(df, 'MA')
+            ma = mpld3.fig_to_html(plt.gcf())
+            plt.close()
+            plotIndicator(df, 'MACD')
+            macd = mpld3.fig_to_html(plt.gcf())
+            plt.close()
+            plotIndicator(df, 'RSI')
+            rsi = mpld3.fig_to_html(plt.gcf())
+            plt.close()
+            plotIndicator(df, 'Stochastic')
+            stoschastic = mpld3.fig_to_html(plt.gcf())
+            plt.close()
+            fig = [bollinger, ma, macd, rsi, stoschastic, rs]
+            
+            return render_template('stock.html', name = name, fig = fig)
+        
+        else :
+            return render_template('readError.html', name = name)
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
