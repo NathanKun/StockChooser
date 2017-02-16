@@ -14,6 +14,8 @@ Created on 2017 2 9
  pip install matplotlib
  pip install mpld3
  pip install Flask
+ pip install openpyxl
+ pip install xlrd
  
  
  pip3 install numpy
@@ -26,6 +28,8 @@ Created on 2017 2 9
  pip3 install matplotlib
  pip3 install mpld3
  pip3 install Flask
+ pip3 install openpyxl
+ pip3 install xlrd
 '''
 
              
@@ -45,24 +49,39 @@ if __name__ == '__main__':
 
     # get 5 stocks data
     print("Getting data!")
-    airbus = gi.getAndGen('airbus')
-    biomerieux = gi.getAndGen('biomerieux')
-    sopra = gi.getAndGen('sopra')
-    total = gi.getAndGen('total')
-    oreal = gi.getAndGen('oreal')
+    #airbus = gi.getAndGen('airbus')
+    #biomerieux = gi.getAndGen('biomerieux')
+    #sopra = gi.getAndGen('sopra')
+    #total = gi.getAndGen('total')
+    #oreal = gi.getAndGen('oreal')
 
     import analyser
     #analyser.analyseRS(airbus)
     #analyser.analyseRSI(airbus)
     #analyser.analyseStochastic(airbus)
-    print(analyser.analyseRS(biomerieux))
+    #print(analyser.analyseRS(biomerieux))
     
-    gi.plotIndicator(airbus, 'MACD')
+    #gi.plotIndicator(airbus, 'MACD')
     #sopra.loc[cd.startShowing : cd.end, ['Close']].plot()
     
-    gi.plotIndicator(biomerieux, 'RS')
+    #gi.plotIndicator(biomerieux, 'RS')
     plt.show()
+
+    import pandas as pd
+    #tickerSymbols = pd.read_excel('../data/Yahoo Ticker Symbols.xlsx')
+    tickerSymbolsFile = pd.ExcelFile('../data/Yahoo Ticker Symbols.xlsx')
+    sheetsName = tickerSymbolsFile.sheet_names
+    tickerSymbolSheets = []
+    selectCountryHtml = []
+    for sheetName in sheetsName :
+        #tickerSymbolSheets.append(tickerSymbolsFile.parse(sheetName).to_json(orient='records')[1:-1].replace('},{', '} {'))
+        tickerSymbolSheets.append(tickerSymbolsFile.parse(sheetName).to_json(orient='records')[1:-1])
+        selectCountryHtml.append('<option value="%(val)s">%(text)s</option>' % 
+                                    {'val': sheetName, 'text': sheetName})
+    import json
+    list(tickerSymbolSheets)
     
+    print(tickerSymbolSheets[1])
     
     
     print("End!")
