@@ -27,18 +27,18 @@ def genLines(df):
     
     
 # calculate moving average
-def genMA(df, maDays = [5, 10, 20, 40]):
+def genMA(df, maDays = [5, 20, 40]):
     for ma in maDays:
-        column_name = "MA for %s days" %(str(ma))
-        df[column_name] = df['Adj Close'].rolling(center=False,window=ma).mean()
+        column_name = "MA%s" %(str(ma))
+        df[column_name] = df['Close'].rolling(center=False,window=ma).mean()
         
     
 # calculate bollinger bands. MA20 +- 2*std
 def genBollinger(df, length = 20, numsd = 2):
     import numpy as np      # fundamental package for scientific computing
     """ returns average, upper band, and lower band"""
-    ave = df['Adj Close'].rolling(window=length).mean()
-    std = df['Adj Close'].rolling(window=length).std()
+    ave = df['Close'].rolling(window=length).mean()
+    std = df['Close'].rolling(window=length).std()
     upband = ave + (std * numsd)
     dnband = ave - (std * numsd)
     df['bollinger ave'] = np.round(ave,3)
@@ -113,13 +113,13 @@ def genRS(df) :
     import constDaytime as cd
 
     _, df.loc[cd.trendLinesStartDate : cd.end, 'resistance'], df.loc[cd.trendLinesStartDate : cd.end, 'support'], _, _ \
-        = gentrends(df.loc[cd.trendLinesStartDate : cd.end, 'Adj Close'], window = 1.0/2, charts = False)   #generate trend lines, ignore first return value
+        = gentrends(df.loc[cd.trendLinesStartDate : cd.end, 'Close'], window = 1.0/2, charts = False)   #generate trend lines, ignore first return value
         
         
 # calculate MACD(12, 26, 9)
 def genMACD(df):
-    ema12 = df['Adj Close'].ewm(min_periods = 12, span = 12).mean()
-    ema26 = df['Adj Close'].ewm(min_periods = 26, span = 26).mean()
+    ema12 = df['Close'].ewm(min_periods = 12, span = 12).mean()
+    ema26 = df['Close'].ewm(min_periods = 26, span = 26).mean()
     dif = ema12 - ema26                             # DIF
     dem = dif.ewm(min_periods = 9, span = 9).mean() # MACD
     df['dif'] = dif         # DIF
@@ -132,13 +132,13 @@ def genMACD(df):
     '''
     series = pd.Series()
     series.set_value(0, 0)
-    for i in range(1, airbus['Adj Close'].size) :
-        series.set_value(value = airbus['Adj Close'].iloc[i] - airbus['Adj Close'].iloc[i - 1], label = i)  # calculate difference between two days
+    for i in range(1, airbus['Close'].size) :
+        series.set_value(value = airbus['Close'].iloc[i] - airbus['Close'].iloc[i - 1], label = i)  # calculate difference between two days
     series.index = airbus.index #reset index of series to the same index as dataframe, otherwise it cannot be combine into dataframe
     '''
-    #airbus['delta'] = airbus['Adj Close'].diff()    # diff() can do the same thing as above
+    #airbus['delta'] = airbus['Close'].diff()    # diff() can do the same thing as above
 def genRSI(df):
-    df['delta'] = df['Adj Close'].diff()
+    df['delta'] = df['Close'].diff()
     dUp, dDown = df['delta'].copy(), df['delta'].copy()
     dUp[dUp < 0] = 0        # fill NaN with 0
     dDown[dDown > 0] = 0
@@ -184,7 +184,7 @@ def genStochastic(df):
 def genAll(df):
     if not isinstance(df, str) :
         genLines(df)
-        genMA(df, [5, 10, 20, 40])
+        genMA(df, [5, 20, 40])
         genBollinger(df)
         genMACD(df)
         genRS(df)
@@ -193,44 +193,44 @@ def genAll(df):
     else : pass
     
 # plot a indicator
-def plotIndicator(df, ind, maDays = [5, 10, 20, 40]):
+import constDaytime as cd
+def plotIndicator(df, ind, maDays = [5, 20, 40], startShowPoint = cd.startShowing, endShowPoint = cd.end):
     if not isinstance(df, str) :
-        import constDaytime as cd
         if ind == 'MA':
-            if maDays != [5, 10, 20, 40]:   
+            if maDays != [5, 20, 40]:   
                 nameList = []
                 for ma in maDays:
-                    columnName = "MA for %s days" %(str(ma))
+                    columnName = "MA%s" %(str(ma))
                     nameList.append(columnName)
                 if len(nameList) == 0 :
                     pass
                 elif len(nameList) == 1 :
-                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0]]].plot(grid = True, figsize = (10, 5))
                 elif len(nameList) == 2 :
-                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1]]].plot(grid = True, figsize = (10, 5))
                 elif len(nameList) == 3 :
-                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2]]].plot(grid = True, figsize = (10, 5))
                 elif len(nameList) == 4 :
-                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3]]].plot(grid = True, figsize = (10, 5))
                 elif len(nameList) == 5 :
-                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4]]].plot(grid = True, figsize = (10, 5))
                 elif len(nameList) == 6 :
-                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5]]].plot(grid = True, figsize = (10, 5))
                 elif len(nameList) == 7 :
-                    df.loc[cd.startShowing : cd.end, ['Adj Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5],nameList[6]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5],nameList[6]]].plot(grid = True, figsize = (10, 5))
             else :
-                df.loc[cd.startShowing : cd.end, ['Adj Close','MA for 5 days','MA for 10 days','MA for 20 days','MA for 40 days']].plot(grid = True, figsize = (10, 5))
+                df.loc[startShowPoint : endShowPoint, ['Close', 'MA5', 'MA20', 'MA40']].plot(grid = True, figsize = (10, 5))
         elif ind == 'Bollinger':
-            df.loc[cd.startShowing : cd.end, ['Adj Close','bollinger upper','bollinger ave','bollinger lower']].plot(grid = True, figsize = (10, 5))
+            df.loc[startShowPoint : endShowPoint, ['Close','bollinger upper','bollinger ave','bollinger lower']].plot(grid = True, figsize = (10, 5))
         elif ind == 'RS':
-            df.loc[cd.startShowing : cd.end, ['Adj Close', 'resistance', 'support']].plot(grid = True, figsize = (10, 5))
+            df.loc[startShowPoint : endShowPoint, ['Close', 'resistance', 'support']].plot(grid = True, figsize = (10, 5))
         elif ind == 'MACD':
-            df.loc[cd.startShowing : cd.end, ['Adj Close', 'dif', 'MACD']].plot(grid = True, figsize = (10, 5), secondary_y = ["dif", "MACD"])    # use different scales
+            df.loc[startShowPoint : endShowPoint, ['Close', 'dif', 'MACD']].plot(grid = True, figsize = (10, 5), secondary_y = ["dif", "MACD"])    # use different scales
         elif ind == 'RSI':
-            df.loc[cd.startShowing : cd.end, ['RSI', '30 Line', '70 Line']].plot(grid = True, figsize = (10, 5))
+            df.loc[startShowPoint : endShowPoint, ['RSI', '30 Line', '70 Line']].plot(grid = True, figsize = (10, 5))
         elif ind == 'Stochastic':
-            df.loc[cd.startShowing : cd.end, ['k slow', 'd slow', 'j slow', '20 Line', '80 Line']].plot(grid = True, figsize = (10, 5))
-        elif ind == 'Adj close':
+            df.loc[startShowPoint : endShowPoint, ['k slow', 'd slow', 'j slow', '20 Line', '80 Line']].plot(grid = True, figsize = (10, 5))
+        elif ind == 'Adj Close':
             df['Adj Close'].plot(grid = True, figsize = (10, 5))
         elif ind == 'Close':
             df['Close'].plot(grid = True, figsize = (10, 5))

@@ -12,18 +12,54 @@
 
 <body>
     <h1>stock : {{ name }}</h1>
-    {% autoescape false %}
-    <h2>Bollinger Bands</h2>
-    {{ fig[0] }}
-    <h2>Moving average</h2>
-    {{ fig[1] }}
-    <h2>MACD</h2>
-    {{ fig[2] }}
-    <h2>RSI</h2>
-    {{ fig[3] }}
-    <h2>stoschastic</h2>
-    {{ fig[4] }} 
-    <h2>Resistance and Support</h2>
-    {{ fig[5] }}
-	{% endautoescape %}
+    
+    <form action="./show" id="selectStock" method="POST">
+        <input type="text" name="stockName" value = "{{ name }}"/ >
+        <select name="showPeriod">
+            {% autoescape false %}
+            {{ shortTermDateTimeOption }} 
+            {% endautoescape %}
+            <input type="submit">
+        </select>
+    </form>    
+    
+        {% autoescape false %}
+        <h2>Bollinger Bands</h2>
+        {{ fig[0] }} 
+        Score: {{ score[0] }}<br>
+        Raison: {{ raison[0] }}
+        
+        <h2>Moving average</h2>
+        {{ fig[1] }}
+        Score: {{ score[1] }}<br>
+        Raison: {{ raison[1] }}
+        
+        <h2>MACD</h2>
+        {{ fig[2] }}
+        Score: {{ score[2] }}<br>
+        Raison: {{ raison[2] }}
+        
+        <h2>RSI</h2>
+        {{ fig[3] }}
+        Score: {{ score[3] }}<br>
+        Raison: {{ raison[3] }}
+        
+        <h2>stochastic</h2>
+        {{ fig[4] }}
+        Score: {{ score[4] }}<br>
+        Raison: {{ raison[4] }}
+        
+        <h2>Resistance and Support</h2>
+        {{ fig[5] }} 
+        Score: {{ score[5] }}<br>
+        Raison: {{ raison[5] }}
+        
+        {% endautoescape %}
+
+    <script>
+        function updateTextInput(inputText, val) {
+            document.getElementById(inputText).value = val;
+        }
+
+    </script>
 </body>

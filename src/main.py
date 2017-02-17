@@ -3,6 +3,9 @@ Created on 2017 2 9
 
 @author: Junyang HE
 '''
+from pandas.tseries.offsets import Hour
+
+
 '''
  pip install numpy
  pip install python-dateutil
@@ -65,23 +68,14 @@ if __name__ == '__main__':
     #sopra.loc[cd.startShowing : cd.end, ['Close']].plot()
     
     #gi.plotIndicator(biomerieux, 'RS')
-    plt.show()
 
-    import pandas as pd
-    #tickerSymbols = pd.read_excel('../data/Yahoo Ticker Symbols.xlsx')
-    tickerSymbolsFile = pd.ExcelFile('../data/Yahoo Ticker Symbols.xlsx')
-    sheetsName = tickerSymbolsFile.sheet_names
-    tickerSymbolSheets = []
-    selectCountryHtml = []
-    for sheetName in sheetsName :
-        #tickerSymbolSheets.append(tickerSymbolsFile.parse(sheetName).to_json(orient='records')[1:-1].replace('},{', '} {'))
-        tickerSymbolSheets.append(tickerSymbolsFile.parse(sheetName).to_json(orient='records')[1:-1])
-        selectCountryHtml.append('<option value="%(val)s">%(text)s</option>' % 
-                                    {'val': sheetName, 'text': sheetName})
-    import json
-    list(tickerSymbolSheets)
+
     
-    print(tickerSymbolSheets[1])
+    plt.show()
     
+    
+    #import datetime
+    #ts = datetime.datetime.now().replace(tzinfo=datetime.timezone(datetime.timedelta(hours = 1))).timestamp()
+    #print(ts)
     
     print("End!")

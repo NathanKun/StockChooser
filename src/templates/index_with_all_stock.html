@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="index, 主页">
+    <meta name="description" content="某主页">
+    <meta name="robots" content="index">
+    <title>某主页</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+
+<body>
+    <form action="./show" id="selectStock" method="POST">
+        Stock:
+        <select name="stockName">
+            <option value="airbus">airbus</option>
+            <option value="sopra">SOPRA</option>
+            <option value="biomerieux">biomerieux</option>
+            <option value="oreal">oreal</option>
+            <option value="total">total</option>
+        </select>
+        <input type="submit">
+    </form>
+
+    <form action="./submit" id="selectTicker" onsubmit="return validateForm();" method="POST">
+        Country:
+        <select id="country" name="country" onchange="countrySelFunc()">
+            {% autoescape false %}
+                {{ countryList }} 
+            {% endautoescape %}
+        </select> Stock list:
+        <select id="stockList" name="stockList"></select>
+        <input type="submit">
+    </form>
+
+    <script>
+        window.onload = function() { // on page loading finish
+            var firstOption = document.createElement("option"); // add a first option to make an option change event
+            firstOption.text = "Choose a Country";
+            firstOption.value = "NOTCHOSE";
+            document.getElementById("country").prepend(firstOption);
+            document.getElementById("country").selectedIndex = 0;
+        }
+
+        function countrySelFunc() { // country list option on change, change the stock list of country
+            var x = document.getElementById("country").selectedIndex - 1; // selected index
+            var y = document.getElementById("country").options; // option list
+            //alert("Index: " + y[x].index + " is " + y[x].text);
+            var select = document.getElementById("stockList"); // country's stock list
+            
+            if (x > -1) {
+                var tickerSymbolSheets = {{ tickerSymbolSheets | tojson }} // (json list) list from server
+                var selectedCountry = y[x].text; // get the selected country's index
+                var selectedCountrySheet = tickerSymbolSheets[y[x].index]; // get the (json list)
+
+                var jsonObj = $.parseJSON('[' + selectedCountrySheet + ']'); // add [] to let it looks like a list, than parse str in list of json object
+                //alert(jsonObj[1]["Ticker"]);
+
+                select.options.length = 0; // clear list
+
+                //for (var obj in jsonObj) { // why this doesn't work???
+                for (i = 0; i < jsonObj.length; i++) { // add options in the list
+                    var option = document.createElement("option");
+                    option.text = jsonObj[i]["Name"];
+                    option.value = jsonObj[i]["Ticker"];
+                    //alert(jsonObj[i]["Ticker"])
+                    select.add(option);
+                }
+            } else {
+                select.options.length = 0; // clear list
+            }
+        }
+
+        function validateForm() {
+            var x = document.forms["selectTicker"]["country"].value;
+            if (x == "NOTCHOSE") {
+                alert("Please choose a country");
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+</body>

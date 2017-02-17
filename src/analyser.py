@@ -192,6 +192,17 @@ def analyseStochastic(df):
     
     
     
+
+def analyseFinanceData(df):
+    import readFromFile as rff
+    bna, per, returnRate, dividend, turnOver = rff.readFinanceData()
+    
+    
+    
+    
+    
+    
+    
     
     
     
