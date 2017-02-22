@@ -29,19 +29,27 @@ def get_google_finance_intraday(ticker, period=60, days=1):
         closing price, and volume. The index contains the times associated with
         the retrieved price values.
     """
-
+    # x = EPA for europe paris exchanges
+    
+    
     uri = 'https://www.google.com/finance/getprices' \
-          '?i={period}&p={days}d&f=d,o,h,l,c,v&df=cpct&q={ticker}'.format(ticker=ticker,
+          '?i={period}&p={days}d&f=d,h,l&df=cpct&q={ticker}&x=EPA'.format(ticker=ticker,
                                                                           period=period,
                                                                           days=days)
+    
+    
     page = urlopen(uri)
     #reader = csv.reader(page.content.splitlines())
     data = page.read().decode('utf-8').split('\n')
     #print(data)
-    columns = ['Open', 'High', 'Low', 'Close', 'Volume']
+    
+    #columns = ['Open', 'High', 'Low', 'Close']
+    columns = ['High', 'Low'] 
+    
     rows = []
     times = []
     
+    '''
     dfList = []
     dayCount = 0
     dayCountTriggered = False
@@ -83,20 +91,63 @@ def get_google_finance_intraday(ticker, period=60, days=1):
     else:
         dfList.append(pd.DataFrame(rows, index=pd.DatetimeIndex(times, name='Date')))
             
+    for df in dfList :
+        df['Close'] = df['Low']
+    '''
+    
+    daySplitStart = []
+    daySplitEnd = []
+    skippedFirst = False
+    for row in data:
+        row = row.split(',')
+        if re.match('^[a\d]', row[0]):
+            if row[0].startswith('a'):
+                start = datetime.datetime.fromtimestamp(int(row[0][1:]))
+                times.append(start)
+                daySplitStart.append(times[len(times)-1])   # copy first and last index for each day
+                if skippedFirst :
+                    daySplitEnd.append(times[len(times)-2]) # no end for first time
+                skippedFirst = True
+            else:
+                times.append(start+datetime.timedelta(seconds=period*int(row[0])))
+            rows.append(map(float, row[1:]))
+        
+    if len(rows):   # save data as dataframe
+        longTermDf = pd.DataFrame(rows, index=pd.DatetimeIndex(times, name='Date'),
+                    columns=columns)
+    else:
+        longTermDf = pd.DataFrame(rows, index=pd.DatetimeIndex(times, name='Date'))
+    
+    longTermDf['Close'] = longTermDf['Low'] # it seem that boursorama use "Low", but gi use "Close"
+    
+    import genIndicator as gi
+    gi.genAll(longTermDf)   # generate all indicators before split
+    
+    dfList = []
+    for index in range(0, len(daySplitEnd)):    # split data day by day
+        if(index != times[0]):
+            dfList.append(longTermDf.loc[daySplitStart[index] : daySplitEnd[index]])
+    
+    dfList.append(longTermDf.loc[daySplitStart[len(daySplitStart)-1] : ])   # latest day data
+    
     return dfList
 
-
-intradayList = get_google_finance_intraday('AIR.PA', 60, 15)
-dateList = []
-for item in intradayList :
-    dateList.append(item.index[0].strftime('%d/%m/%Y'))
-                
-seletedDateTimeStr = '13/02/2017 - 13h26'
-seletedDateTime = datetime.datetime.strptime(seletedDateTimeStr, '%d/%m/%Y - %Hh%M')
-seletedDateStr = seletedDateTimeStr[0:10]
-seletedTimeStr = seletedDateTimeStr[13:18]
-df = intradayList[dateList.index(seletedDateStr)]
-startShowPoint = df.index[0]    # type : timestamp
-#endShowPoint = seletedDateTime.timestamp()
-endShowPoint = pd.Timestamp(seletedDateTime)
-print(endShowPoint)
+if __name__ == '__main__':
+    intradayList = get_google_finance_intraday('SOP', 60, 20)
+    for item in intradayList:
+        print(item.index[0].strftime('%d/%m/%Y'))
+    '''
+    dateList = []
+    for item in intradayList :
+        dateList.append(item.index[0].strftime('%d/%m/%Y'))
+                    
+    seletedDateTimeStr = '21/02/2017 - 13h30'
+    seletedDateTime = datetime.datetime.strptime(seletedDateTimeStr, '%d/%m/%Y - %Hh%M')
+    seletedDateStr = seletedDateTimeStr[0:10]
+    seletedTimeStr = seletedDateTimeStr[13:18]
+    df = intradayList[dateList.index(seletedDateStr)]
+    startShowPoint = df.index[0]    # type : timestamp
+    #endShowPoint = seletedDateTime.timestamp()
+    endShowPoint = pd.Timestamp(seletedDateTime)
+    #print(endShowPoint)
+    '''

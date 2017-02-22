@@ -3,15 +3,15 @@ Created on 2017 2 11
 
 @author: Junyang HE
 '''
-from matplotlib.pyplot import grid
 
 # generate line function
+# deprecate, use df['new'] = level
 def genLineInDataframe(y, df):
     import pandas as pd     # data structures and data analysis tools
     series = pd.Series()
     series.set_value(0, 0)
     for i in range(0, df.size) :
-        series.set_value(value = y, label = i)  # calculate difference between two days\
+        series.set_value(value = y, label = i)
     series.index = df.index
     return series
 
@@ -20,10 +20,16 @@ def genLineInDataframe(y, df):
 def genLines(df):
     #df['0.2 Line'] = genLineInDataframe(0.2, df['Close'])
     #df['0.8 Line'] = genLineInDataframe(0.8, df['Close'])
+    '''
     df['20 Line'] = genLineInDataframe(20, df['Close'])
     df['30 Line'] = genLineInDataframe(30, df['Close'])
     df['70 Line'] = genLineInDataframe(70, df['Close'])
     df['80 Line'] = genLineInDataframe(80, df['Close'])
+    '''
+    df['20 Line'] = 20
+    df['30 Line'] = 30
+    df['70 Line'] = 70
+    df['80 Line'] = 80
     
     
 # calculate moving average
@@ -170,7 +176,7 @@ def stochastic(stockHigh, stockLow, stockClose, p1, p2, p3, version):
             
     k *= 100
     d *= 100
-    j = 3*k - 2*d
+    j = 3*d - 2*k
     #ds = k.ewm(min_periods = p3, alpha = 1.0/3).mean()   # calculate %d ? $d slow
         
     return k, d, j
@@ -183,13 +189,21 @@ def genStochastic(df):
 # generate all indicators
 def genAll(df):
     if not isinstance(df, str) :
+        #print("generating lines")
         genLines(df)
+        #print("lines done")
         genMA(df, [5, 20, 40])
+        #print("ma done")
         genBollinger(df)
+        #print("bo done")
         genMACD(df)
-        genRS(df)
+        #print("macd done")
+        #genRS(df)
+        #print("rs done")
         genRSI(df)
+        #print("rsi done")
         genStochastic(df)
+        #print("stoc done")
     else : pass
     
 # plot a indicator
@@ -219,13 +233,14 @@ def plotIndicator(df, ind, maDays = [5, 20, 40], startShowPoint = cd.startShowin
                 elif len(nameList) == 7 :
                     df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5],nameList[6]]].plot(grid = True, figsize = (10, 5))
             else :
-                df.loc[startShowPoint : endShowPoint, ['Close', 'MA5', 'MA20', 'MA40']].plot(grid = True, figsize = (10, 5))
+                #df.loc[startShowPoint : endShowPoint, ['Close', 'MA5', 'MA20', 'MA40']].plot(grid = True, figsize = (10, 5))
+                df.loc[startShowPoint : endShowPoint, ['Close', 'MA5', 'MA20']].plot(grid = True, figsize = (10, 5))
         elif ind == 'Bollinger':
             df.loc[startShowPoint : endShowPoint, ['Close','bollinger upper','bollinger ave','bollinger lower']].plot(grid = True, figsize = (10, 5))
         elif ind == 'RS':
             df.loc[startShowPoint : endShowPoint, ['Close', 'resistance', 'support']].plot(grid = True, figsize = (10, 5))
         elif ind == 'MACD':
-            df.loc[startShowPoint : endShowPoint, ['Close', 'dif', 'MACD']].plot(grid = True, figsize = (10, 5), secondary_y = ["dif", "MACD"])    # use different scales
+            df.loc[startShowPoint : endShowPoint, ['dif', 'MACD']].plot(grid = True, figsize = (10, 5))
         elif ind == 'RSI':
             df.loc[startShowPoint : endShowPoint, ['RSI', '30 Line', '70 Line']].plot(grid = True, figsize = (10, 5))
         elif ind == 'Stochastic':
@@ -245,11 +260,11 @@ def readDataFromNet(stock):
     elif stock == 'sopra':
         df = data.DataReader("SOP.PA", "yahoo", cd.start, cd.end)
     elif stock == 'biomerieux':
-        df = data.DataReader("FP.PA", "yahoo", cd.start, cd.end)
+        df = data.DataReader("BIM.PA", "yahoo", cd.start, cd.end)
     elif stock == 'oreal':
         df = data.DataReader("OR.PA", "yahoo", cd.start, cd.end)
     elif stock == 'total':
-        df = data.DataReader("BIM.PA", "yahoo", cd.start, cd.end)
+        df = data.DataReader("FP.PA", "yahoo", cd.start, cd.end)
     else:
         try :
             df = data.DataReader(stock, "yahoo", cd.start, cd.end)

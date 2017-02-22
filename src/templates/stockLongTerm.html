@@ -8,7 +8,6 @@
     <title>某主页</title>
     <title></title>
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-	<link rel="stylesheet" href="./css/show.css">
 </head>
 
 <body>
@@ -27,28 +26,18 @@
         {% autoescape false %}
         <h2>Bollinger Bands</h2>
         {{ fig[0] }} 
-        Score: {{ score[0] }}<br>
-        Raison: {{ raison[0] }}
         
         <h2>stochastic</h2>
         {{ fig[4] }}
-        Score: {{ score[1] }}<br>
-        Raison: {{ raison[1] }}
         
         <h2>Moving average</h2>
         {{ fig[1] }}
-        Score: {{ score[2] }}<br>
-        Raison: {{ raison[2] }}
         
         <h2>MACD</h2>
         {{ fig[2] }}
-        Score: {{ score[3] }}<br>
-        Raison: {{ raison[3] }}
         
         <h2>RSI</h2>
         {{ fig[3] }}
-        Score: {{ score[4] }}<br>
-        Raison: {{ raison[4] }}
         
         {% endautoescape %}
 

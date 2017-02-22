@@ -17,9 +17,18 @@ def readFinanceData():
 
 def readScoreFile(stock):
     import pandas as pd
-    airbusNote = pd.ExcelFile('../data/airbus.xlsx')
-    # other files...
-    return airbusNote
+    if stock == 'airbus':
+        excelFIle = pd.ExcelFile('../data/Airbus.xlsx')
+    elif stock == 'sopra':
+        excelFIle = pd.ExcelFile('../data/Sopra.xlsx')
+    elif stock == 'biomerieux':
+        excelFIle = pd.ExcelFile('../data/Biomerieux.xlsx')
+    elif stock == 'oreal':
+        excelFIle = pd.ExcelFile('../data/Loreal.xlsx')
+    elif stock == 'total':
+        excelFIle = pd.ExcelFile('../data/Total.xlsx')
+    
+    return excelFIle
     
 def analyseScoreFile(df):
     sheetsName = df.sheet_names
@@ -38,9 +47,12 @@ def analyseScoreFile(df):
         ssList.append(temp)
     return ssList
     
-ssList = analyseScoreFile(readScoreFile('airbus'))
-ss = ssList[1]
-print(ss.date[:2])
+    
+if __name__ == '__main__':
+    ssList = analyseScoreFile(readScoreFile('oreal'))
+    #ss = ssList[0]
+    for ss in ssList:
+        print(ss.date)
     
     
     

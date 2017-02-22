@@ -6,6 +6,7 @@ Created on 2017 2 11
 from genIndicator import plotIndicator
 from flask import Flask, url_for, redirect, render_template, request
 from _datetime import datetime
+from _overlapped import NULL
 #app = Flask(__name__, root_path = '/home/wwwroot/catprogrammer.com/stockchooser')
 app = Flask(__name__)
 app.debug = True
@@ -61,20 +62,34 @@ def show(name=None):
         else :
             # get short term intraday data and generate indicators
             import googleFinanceIntraday as gfi
+              
+            # get 15 days intraday data, periode 60s
+            if name == 'airbus':
+                intradayList = gfi.get_google_finance_intraday('AIR', 60, 20)
+            elif name == 'sopra':
+                intradayList = gfi.get_google_finance_intraday('SOP', 60, 20)
+            elif name == 'biomerieux':
+                intradayList = gfi.get_google_finance_intraday('BIM', 60, 20)
+            elif name == 'oreal':
+                intradayList = gfi.get_google_finance_intraday('OR', 60, 20)
+            elif name == 'total':
+                intradayList = gfi.get_google_finance_intraday('FP', 60, 20)
             
-            # TODO change ticker
-            intradayList = gfi.get_google_finance_intraday('AIR.PA', 60, 15)    # get 15 days intraday data, periode 60s
             dateList = []
             for item in intradayList :
-                dateList.append(item.index[0].strftime('%d/%m/%Y'))             # copy all dates in a list
+                dateList.append(item.index[0].strftime('%d/%m/%Y')) # copy all dates in a list
+                print(item.index[0].strftime('%d/%m/%Y'))             
                             
-            seletedDateTimeStr = '13/02/2017 - 13h26'                           # the date and time selected by user
+            seletedDateTimeStr = showPeriod                         # the date and time selected by user
             seletedDateTime = datetime.strptime(seletedDateTimeStr, '%d/%m/%Y - %Hh%M') # parse to datetime object
             seletedDateStr = seletedDateTimeStr[0:10]
             #seletedTimeStr = seletedDateTimeStr[13:18]
             
+            #print(seletedDateStr)
+            #print(dateList.index(seletedDateStr))
             df = intradayList[dateList.index(seletedDateStr)]   # target dataframe, because intradayList and dateList have the same index
-            gi.genAll(df)   # generate indicators
+            #gi.genAll(df)   # generate indicators
+            #print(df['Close'])
             
             # set start and end point
             startShowPoint = df.index[0]    # type : timestamp
@@ -85,15 +100,20 @@ def show(name=None):
     
         # read scores from file
         import readFromFile as rff          
-        ssList = rff.analyseScoreFile(rff.readScoreFile('airbus'))    # list of scoreStructure by date, containing tables, date, time and final score
+        #print(name)
+        ssList = rff.analyseScoreFile(rff.readScoreFile(name))    # list of scoreStructure by date, containing tables, date, time and final score
                                                     
         intradayTime = []                           # list of datetime when give score
         intradayTimeHtml = []                       # list of html code for short term option
         
-        # generate option list for short term
+        
+        ssToShow = NULL
         intradayTimeHtml.append('<option value="longTerm">longTerm</option>')
-        for ss in ssList :
-            if not ss.date == 'model' :
+        for ss in ssList :              
+            if showPeriod != 'longTerm' :   # target seleted date's scoreStructure
+                if ss.date == seletedDateTimeStr[:10].replace("/", " "):
+                    ssToShow = ss
+            if not ss.date == 'model' :     # generate option list for short term
                 tempDateTime = datetime(int(ss.date[6:10]), int(ss.date[3:5]), int(ss.date[:2]), 
                                         hour=int(ss.time[:2]), minute=int(ss.time[3:5]))
                 intradayTime.append(tempDateTime)
@@ -123,9 +143,12 @@ def show(name=None):
             plt.close()
             fig = [bollinger, ma, macd, rsi, stoschastic]
 
-            return render_template('stock.html', name = name, fig = fig, score = ssList[-1].graphic['Score'].as_matrix(), 
-                                   raison = ssList[-1].graphic['Reason'].as_matrix(), shortTermDateTimeOption = intradayTimeHtml)
-        
+            if showPeriod == 'longTerm' :   # long term use a different template
+                return render_template('stockLongTerm.html', name = name, fig = fig, shortTermDateTimeOption = intradayTimeHtml)
+            else :
+                return render_template('stock.html', name = name, fig = fig, score = ssToShow.graphic['Score'].as_matrix(), 
+                                   raison = ssToShow.graphic['Reason'].as_matrix(), shortTermDateTimeOption = intradayTimeHtml)
+            
         else :
             return render_template('readError.html', name = name)
     
