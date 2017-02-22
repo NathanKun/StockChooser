@@ -11,7 +11,6 @@ import re
 import pandas as pd
 from urllib.request import urlopen
 from _datetime import date
-from _overlapped import NULL
 
 def get_yahoo_finance_intraday(ticker, days=1):
     """
@@ -65,10 +64,10 @@ def get_yahoo_finance_intraday(ticker, days=1):
     
     dfList = []
     dfOneDay = pd.DataFrame(columns=list(longTermDf))
-    lastIndex = NULL
+    lastIndex = None
     for index, row in longTermDf.iterrows():    # split data day by day
         row.name=index
-        if lastIndex != NULL:
+        if lastIndex != None:
             if index.day != lastIndex.day:
                 dfList.append(dfOneDay)
                 dfOneDay = pd.DataFrame(columns=list(longTermDf))

@@ -6,7 +6,6 @@ Created on 2017 2 11
 from genIndicator import plotIndicator
 from flask import Flask, url_for, redirect, render_template, request
 from _datetime import datetime
-from _overlapped import NULL
 #app = Flask(__name__, root_path = '/home/wwwroot/catprogrammer.com/stockchooser')
 app = Flask(__name__)
 app.debug = True
@@ -107,7 +106,7 @@ def show(name=None):
         intradayTimeHtml = []                       # list of html code for short term option
         
         
-        ssToShow = NULL
+        ssToShow = None
         intradayTimeHtml.append('<option value="longTerm">longTerm</option>')
         for ss in ssList :              
             if showPeriod != 'longTerm' :   # target seleted date's scoreStructure
