@@ -77,7 +77,7 @@ def show(name=None):
             dateList = []
             for item in intradayList :
                 dateList.append(item.index[0].strftime('%d/%m/%Y')) # copy all dates in a list
-                print(item.index[0].strftime('%d/%m/%Y'))             
+                #print(item.index[0].strftime('%d/%m/%Y'))             
                             
             seletedDateTimeStr = showPeriod                         # the date and time selected by user
             seletedDateTime = datetime.strptime(seletedDateTimeStr, '%d/%m/%Y - %Hh%M') # parse to datetime object
@@ -146,7 +146,8 @@ def show(name=None):
                 return render_template('stockLongTerm.html', name = name, fig = fig, shortTermDateTimeOption = intradayTimeHtml)
             else :
                 return render_template('stock.html', name = name, fig = fig, score = ssToShow.graphic['Score'].as_matrix(), 
-                                   raison = ssToShow.graphic['Reason'].as_matrix(), shortTermDateTimeOption = intradayTimeHtml)
+                                   raison = ssToShow.graphic['Reason'].as_matrix(), shortTermDateTimeOption = intradayTimeHtml, 
+                                   seletedDateTimeStr = seletedDateTimeStr)
             
         else :
             return render_template('readError.html', name = name)
