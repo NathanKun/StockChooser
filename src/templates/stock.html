@@ -2,10 +2,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="index, 主页">
-    <meta name="description" content="某主页">
+    <meta name="keywords" content="index, stock, chooser, show, result">
+    <meta name="description" content="StockChooser show result page">
     <meta name="robots" content="index">
-    <title>某主页</title>
+    <title>Stock Chooser Show Result</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/show.css') }}">
 </head>
 
@@ -13,7 +13,7 @@
     <h1>stock : {{ name }}</h1>
     
     <form action="./show" id="selectStock" method="POST">
-        <input type="text" name="stockName" value = "{{ name }}"/ >
+        <input type="text" id ="stockName" name="stockName" value = "{{ name }}"/ >
         <select name="showPeriod">
             {% autoescape false %}
             {{ shortTermDateTimeOption }} 

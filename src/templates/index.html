@@ -2,10 +2,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="index, 主页">
-    <meta name="description" content="某主页">
+    <meta name="keywords" content="index, stock, chooser">
+    <meta name="description" content="Stoch Chooser Index">
     <meta name="robots" content="index">
-    <title>某主页</title>
+    <title>Stock Chooser</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 
@@ -19,6 +19,7 @@
             <option value="oreal">oreal</option>
             <option value="total">total</option>
         </select>
-        <input name = "showPeriod" value = "longTerm" type="submit">
+        <input type = "text" name = "showPeriod" id = "showPeriod" value = "longTerm" />
+        <input type="submit">
     </form>
 </body>

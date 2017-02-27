@@ -2,19 +2,19 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="index, 主页">
-    <meta name="description" content="某主页">
+    <meta name="keywords" content="index, stock, chooser, show, result">
+    <meta name="description" content="StockChooser show result page for long term">
     <meta name="robots" content="index">
-    <title>某主页</title>
-    <title></title>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <title>Stock Chooser Show Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/show.css') }}">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 </head>
 
 <body>
     <h1>stock : {{ name }}</h1>
     
     <form action="./show" id="selectStock" method="POST">
-        <input type="text" name="stockName" value = "{{ name }}"/ >
+        <input type="text" id="stockName" name="stockName" value = "{{ name }}"/ >
         <select name="showPeriod">
             {% autoescape false %}
             {{ shortTermDateTimeOption }} 
