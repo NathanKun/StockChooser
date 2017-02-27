@@ -10,16 +10,17 @@
 </head>
 
 <body>
+    <header>
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo" />
+    </header>
     <form action="./show" id="selectStock" method="POST">
-        Stock:
-        <select name="stockName">
-            <option value="airbus">Airbus</option>
-            <option value="sopra">Sopra Steria</option>
-            <option value="biomerieux">Biomerieux</option>
-            <option value="oreal">L'Oreal</option>
-            <option value="total">TOTAL</option>
-        </select>
         <input type = "text" name = "showPeriod" id = "showPeriod" value = "longTerm" />
-        <input type="submit">
+        <div id="logosDiv">
+            <input class="logos" type="image" name="stockName" value="airbus" src="{{ url_for('static', filename='img/Airbus.png') }}" border="0" alt="Submit" />
+            <input class="logos" type="image" name="stockName" value="sopra" src="{{ url_for('static', filename='img/Soprasteria.png') }}" border="0" alt="Submit" />
+            <input class="logos" type="image" name="stockName" value="biomerieux" src="{{ url_for('static', filename='img/Biomerieux.png') }}" border="0" alt="Submit" />
+            <input class="logos" type="image" name="stockName" value="oreal" src="{{ url_for('static', filename='img/Loreal.png') }}" border="0" alt="Submit" />
+            <input class="logos" type="image" name="stockName" value="total" src="{{ url_for('static', filename='img/Total.png') }}" border="0" alt="Submit" />
+        </div>
     </form>
 </body>
