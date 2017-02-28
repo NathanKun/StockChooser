@@ -36,4 +36,6 @@ header > img {
     text-align: center;
     display: block;
     vertical-align: middle;
+    cursor: pointer; 
+    cursor: hand;
 }
