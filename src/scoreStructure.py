@@ -8,7 +8,7 @@ class Score :
     
     date = None
     time = None
-    critere = []
+    criterion = []
     graphic = []
     finance = []
     finalScore = []
@@ -16,7 +16,7 @@ class Score :
     def __init__(self, date):
         self.date = date
         self.time = None
-        self.critere = []
+        self.criterion = []
         self.graphic = []
         self.finance = []
         self.finalScore = []

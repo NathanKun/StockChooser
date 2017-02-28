@@ -6,13 +6,23 @@
     <meta name="description" content="StockChooser show result page for long term">
     <meta name="robots" content="index">
     <title>Stock Chooser Show Result</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/show.css') }}">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/show.css') }}?v=2">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
 </head>
 
 <body>
-    <h1>stock : {{ name }}</h1>
-    
+    <h1>Stock : {{ name }}</h1>
+    <div>
+        <h3>Finance score:</h3>
+        <table>
+            <tr><td>BNA</td> <td id = "BNA">{{ financeScore[0] }}</td></tr>
+            <tr><td>PER</td> <td id = "PER">{{ financeScore[1] }}</td></tr>
+            <tr><td>Dividende</td> <td id = "Dividende">{{ financeScore[2] }}</td></tr>
+            <tr><td>Rendement</td> <td id = "Rendement">{{ financeScore[3] }}</td></tr>
+            <tr><td>CA</td> <td id = "CA">{{ financeScore[4] }}</td></tr>
+        </table>    
+    </div>
+        
     <form action="./show" id="selectStock" method="POST">
         <input type="text" id="stockName" name="stockName" value = "{{ name }}"/ >
         <select name="showPeriod">
@@ -42,9 +52,25 @@
         {% endautoescape %}
 
     <script>
+        /*window.onload = roundTableValue()
+
+        function roundTableValue()
+        {
+            var BNA = document.getElementById("BNA");
+            var PER = document.getElementById("PER");
+            var Dividende = document.getElementById("Dividende");
+            var Rendement = document.getElementById("Rendement");
+            var CA = document.getElementById("CA");
+            BNA.innerHTML = Math.round({{ financeScore[0] }} * 1000) / 1000;
+            PER.innerHTML = Math.round({{ financeScore[1] }} * 1000) / 1000;
+            Dividende.innerHTML = Math.round({{ financeScore[2] }} * 1000) / 1000;
+            Rendement.innerHTML = Math.round({{ financeScore[3] }} * 1000) / 1000;
+            CA.innerHTML = Math.round({{ financeScore[4] }} * 1000) / 1000;
+        }*/
+        
+        /*
         function updateTextInput(inputText, val) {
             document.getElementById(inputText).value = val;
-        }
-
+        }*/
     </script>
 </body>

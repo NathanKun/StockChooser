@@ -7,10 +7,11 @@
     <meta name="robots" content="index">
     <title>Stock Chooser Show Result</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/show.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
 </head>
 
 <body>
-    <h1>stock : {{ name }}</h1>
+    <h1>Stock : {{ name }}</h1>
     <h3>Date time : {{ seletedDateTimeStr }}</h3>
     
     <form action="./show" id="selectStock" method="POST">
@@ -23,38 +24,75 @@
         </select>
     </form>    
     
+    <div>
+        <h3>Criterion:</h3>
+        <table>
+            <tr><td>Information score</td> <td id = "info"></td></tr>
+            <tr><td>Graphic analyse score</td> <td id = "graphic"></td></tr>
+            <tr><td>Finance analyse score</td> <td id = "finance"></td></tr>
+            <tr><td>Hazard</td> <td id = "hazard"></td></tr>
+        </table>    
+    </div>
+    <h3 id = "final"></h3>
+    <h3>
+        Advice:
+        {% if finalScore is greaterthan 0.2 %}
+        Buy
+        
+        {% else %}
+            {% if -0.2 is greaterthan finalScore %}
+            Sell
+    
+            {% else %}
+            Wait
+            {% endif %}
+        {% endif %}
+    </h3>
+    
         {% autoescape false %}
         <h2>Bollinger Bands</h2>
         {{ fig[0] }} 
         Score: {{ score[0] }}<br>
-        Raison: {{ raison[0] }}
+        Reason: {{ raison[0] }}
         
         <h2>stochastic</h2>
         {{ fig[4] }}
         Score: {{ score[1] }}<br>
-        Raison: {{ raison[1] }}
+        Reason: {{ raison[1] }}
         
         <h2>Moving average</h2>
         {{ fig[1] }}
         Score: {{ score[2] }}<br>
-        Raison: {{ raison[2] }}
+        Reason: {{ raison[2] }}
         
         <h2>MACD</h2>
         {{ fig[2] }}
         Score: {{ score[3] }}<br>
-        Raison: {{ raison[3] }}
+        Reason: {{ raison[3] }}
         
         <h2>RSI</h2>
         {{ fig[3] }}
         Score: {{ score[4] }}<br>
-        Raison: {{ raison[4] }}
+        Reason: {{ raison[4] }}
         
         {% endautoescape %}
 
     <script>
-        function updateTextInput(inputText, val) {
-            document.getElementById(inputText).value = val;
+        window.onload = roundTableValue()
+        
+        function roundTableValue()
+        {
+            var info = document.getElementById("info");
+            var graphic = document.getElementById("graphic");
+            var finance = document.getElementById("finance");
+            var hazard = document.getElementById("hazard");
+            var final = document.getElementById("final");
+            info.innerHTML = Math.round({{ criterionScore[0] }} * 1000) / 1000;
+            graphic.innerHTML = Math.round({{ criterionScore[1] }} * 1000) / 1000;
+            finance.innerHTML = Math.round({{ criterionScore[2] }} * 1000) / 1000;
+            hazard.innerHTML = Math.round({{ criterionScore[3] }} * 1000) / 1000;
+            final.innerHTML = "Final score: " + Math.round({{ finalScore }} * 1000) / 1000;
         }
-
+        
     </script>
 </body>

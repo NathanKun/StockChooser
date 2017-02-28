@@ -1,6 +1,7 @@
 body {
 	background: linear-gradient(to bottom, #66ccff, white 120%);
-	background-repeat: no-repeat;
+	background-repeat: no-repeat;    
+    padding: 0 2em;
 }
 
 header {
@@ -17,6 +18,10 @@ header > img {
 }
 
 #showPeriod {
+	display: none;
+}
+
+#stockName {
 	display: none;
 }
 

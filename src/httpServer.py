@@ -118,7 +118,9 @@ def show(name=None):
                 intradayTime.append(tempDateTime)
                 intradayTimeHtml.append('<option value="%(val)s">%(text)s</option>' % 
                                         {'val': tempDateTime.strftime('%d/%m/%Y - %Hh%M'), 'text': tempDateTime.strftime('%d/%m/%Y - %Hh%M')})
-
+        
+        if showPeriod == 'longTerm' :
+            ssToShow = ssList[0]    # for showing finance score in long term page
         
         if not isinstance(df, str) :
             import matplotlib.pyplot as plt, mpld3  # 2D plotting library
@@ -143,11 +145,13 @@ def show(name=None):
             fig = [bollinger, ma, macd, rsi, stoschastic]
 
             if showPeriod == 'longTerm' :   # long term use a different template
-                return render_template('stockLongTerm.html', name = name, fig = fig, shortTermDateTimeOption = intradayTimeHtml)
+                return render_template('stockLongTerm.html', name = name, fig = fig, shortTermDateTimeOption = intradayTimeHtml,
+                                        financeScore = ssToShow.finance['Score'].as_matrix())
             else :
                 return render_template('stock.html', name = name, fig = fig, score = ssToShow.graphic['Score'].as_matrix(), 
                                    raison = ssToShow.graphic['Reason'].as_matrix(), shortTermDateTimeOption = intradayTimeHtml, 
-                                   seletedDateTimeStr = seletedDateTimeStr)
+                                   seletedDateTimeStr = seletedDateTimeStr, criterionScore = ssToShow.criterion['Result'].as_matrix(), 
+                                   finalScore = ssToShow.finalScore)
             
         else :
             return render_template('readError.html', name = name)

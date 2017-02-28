@@ -15,12 +15,20 @@
     </header>
     <form action="./show" id="selectStock" method="POST">
         <input type = "text" name = "showPeriod" id = "showPeriod" value = "longTerm" />
+        <input type = "text" name = "stockName" id = "stockName" />
         <div id="logosDiv">
-            <input class="logos" type="image" name="stockName" value="airbus" src="{{ url_for('static', filename='img/Airbus.png') }}" border="0" alt="Submit" />
-            <input class="logos" type="image" name="stockName" value="sopra" src="{{ url_for('static', filename='img/Soprasteria.png') }}" border="0" alt="Submit" />
-            <input class="logos" type="image" name="stockName" value="biomerieux" src="{{ url_for('static', filename='img/Biomerieux.png') }}" border="0" alt="Submit" />
-            <input class="logos" type="image" name="stockName" value="oreal" src="{{ url_for('static', filename='img/Loreal.png') }}" border="0" alt="Submit" />
-            <input class="logos" type="image" name="stockName" value="total" src="{{ url_for('static', filename='img/Total.png') }}" border="0" alt="Submit" />
+            <img class="logos" onclick="setChoseStockName('airbus')" src="{{ url_for('static', filename='img/Airbus.png') }}" alt="Airbus" />
+            <img class="logos" onclick="setChoseStockName('sopra')" src="{{ url_for('static', filename='img/Soprasteria.png') }}" alt="Sopra Steria" />
+            <img class="logos" onclick="setChoseStockName('biomerieux')" src="{{ url_for('static', filename='img/Biomerieux.png') }}" alt="BioMerieux" />
+            <img class="logos" onclick="setChoseStockName('oreal')" src="{{ url_for('static', filename='img/Loreal.png') }}" alt="L'Oreal" />
+            <img class="logos" onclick="setChoseStockName('total')" src="{{ url_for('static', filename='img/Total.png') }}" alt="Total" />
         </div>
     </form>
+    
+    <script>
+        function setChoseStockName(stock) {
+            document.getElementById("stockName").value = stock;
+            document.getElementById("selectStock").submit();
+        }
+    </script>
 </body>

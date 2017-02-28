@@ -38,9 +38,11 @@ def analyseScoreFile(df):
         daySheet = df.parse(name)
         temp = ss.Score(name)
         temp.time = daySheet.iat[1, 6]
-        temp.critere = daySheet.iloc[0:4, 0:4]
+        temp.criterion = daySheet.iloc[0:4, 0:4]
+        temp.criterion.round(3)
         temp.graphic = daySheet.iloc[9:14, 0:5]
         temp.finance = daySheet.iloc[18:23, 0:5]
+        #temp.finalScore = "{0:.2f}".format(daySheet.iat[0, 6])
         temp.finalScore = daySheet.iat[0, 6]
         temp.graphic.columns = daySheet.iloc[8:9, 0:5].as_matrix()[0]
         temp.finance.columns = daySheet.iloc[17:18, 0:5].as_matrix()[0]
