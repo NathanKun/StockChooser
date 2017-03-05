@@ -51,7 +51,7 @@ def analyseScoreFile(df):
     
     
 if __name__ == '__main__':
-    ssList = analyseScoreFile(readScoreFile('oreal'))
+    ssList = analyseScoreFile(readScoreFile('biomerieux'))
     #ss = ssList[0]
     for ss in ssList:
         print(ss.date)
