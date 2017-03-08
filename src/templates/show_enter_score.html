@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="index, 主页">
+    <meta name="description" content="某主页">
+    <meta name="robots" content="index">
+    <title>某主页</title>
+    <title></title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+
+<body>
+    <form action="./result" id="selectStock" method="POST">
+        <h1>stock : {{ name }}</h1>
+        {% autoescape false %}
+        <h2>Bollinger Bands</h2>
+        {{ fig[0] }} 
+        Score:
+        <input id='bbandsRange' type='range' min='-1' max='1' step='0.1' value='0' onchange="updateTextInput('bbandsText', this.value)" />
+        <input type="text" id="bbandsText" name="bbandsText" value="0" />
+        
+        <h2>Moving average</h2>
+        {{ fig[1] }}
+        Score:
+        <input id='maRange' name='maRange' type='range' min='-1' max='1' step='0.1' value='0' onchange="updateTextInput('maText', this.value)" />
+        <input type="text" id="maText" name="maText" value="0" />
+        
+        <h2>MACD</h2>
+        {{ fig[2] }}
+        Score:
+        <input id='macdRange' name='macdRange' type='range' min='-1' max='1' step='0.1' value='0' onchange="updateTextInput('macdText', this.value)" />
+        <input type="text" id="macdText" name="macdText" value="0" />
+        
+        <h2>RSI</h2>
+        {{ fig[3] }}
+        Score:
+        <input id='rsiRange' name='rsiRange' type='range' min='-1' max='1' step='0.1' value='0' onchange="updateTextInput('rsiText', this.value)" />
+        <input type="text" id="rsiText" name="rsiText" value="0" />
+        
+        <h2>stochastic</h2>
+        {{ fig[4] }}
+        Score:
+        <input id='stochasticRange' name='stochasticRange' type='range' min='-1' max='1' step='0.1' value='0' onchange="updateTextInput('stochasticText', this.value)" />
+        <input type="text" id="stochasticText" name="stochasticText" value="0" />
+        
+        <h2>Resistance and Support</h2>
+        {{ fig[5] }} 
+        {% endautoescape %}
+        Score:
+        <input id='rsRange' name='rsRange' type='range' min='-1' max='1' step='0.1' value='0' onchange="updateTextInput('rsText', this.value)" />
+        <input type="text" id="rsText" name="rsText" value="0" />
+        
+        <input type="submit">
+    </form>
+
+    <script>
+        function updateTextInput(inputText, val) {
+            document.getElementById(inputText).value = val;
+        }
+
+    </script>
+</body>
