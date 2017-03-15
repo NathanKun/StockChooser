@@ -27,53 +27,53 @@
     <div>
         <h3>Criterion:</h3>
         <table>
-            <tr><td>Information score</td> <td id = "info"></td></tr>
-            <tr><td>Graphic analyse score</td> <td id = "graphic"></td></tr>
-            <tr><td>Finance analyse score</td> <td id = "finance"></td></tr>
-            <tr><td>Hazard</td> <td id = "hazard"></td></tr>
+            <tr><td>Note d'information</td> <td id = "info"></td></tr>
+            <tr><td>Note d'analyse graphique </td> <td id = "graphic"></td></tr>
+            <tr><td>Note d'analyse financière</td> <td id = "finance"></td></tr>
+            <tr><td>Note d'hazard</td> <td id = "hazard"></td></tr>
         </table>    
     </div>
     <h3 id = "final"></h3>
     <h3>
-        Advice:
+        Conseil:
         {% if finalScore is greaterthan 0.2 %}
-        Buy
+        Acheter
         
         {% else %}
             {% if -0.2 is greaterthan finalScore %}
-            Sell
+            Vendre
     
             {% else %}
-            Wait
+            Attendre
             {% endif %}
         {% endif %}
     </h3>
     
         {% autoescape false %}
-        <h2>Bollinger Bands</h2>
+        <h2>Bollinger</h2>
         {{ fig[0] }} 
-        Score: {{ score[0] }}<br>
-        Reason: {{ raison[0] }}
+        Note: {{ score[0] }}<br>
+        Raison: {{ raison[0] }}
         
-        <h2>stochastic</h2>
+        <h2>Stochastique</h2>
         {{ fig[4] }}
-        Score: {{ score[1] }}<br>
-        Reason: {{ raison[1] }}
+        Note: {{ score[1] }}<br>
+        Raison: {{ raison[1] }}
         
-        <h2>Moving average</h2>
+        <h2>Moyennes mobile</h2>
         {{ fig[1] }}
-        Score: {{ score[2] }}<br>
-        Reason: {{ raison[2] }}
+        Note: {{ score[2] }}<br>
+        Raison: {{ raison[2] }}
         
         <h2>MACD</h2>
         {{ fig[2] }}
-        Score: {{ score[3] }}<br>
-        Reason: {{ raison[3] }}
+        Note: {{ score[3] }}<br>
+        Raison: {{ raison[3] }}
         
         <h2>RSI</h2>
         {{ fig[3] }}
-        Score: {{ score[4] }}<br>
-        Reason: {{ raison[4] }}
+        Note: {{ score[4] }}<br>
+        Raison: {{ raison[4] }}
         
         {% endautoescape %}
 

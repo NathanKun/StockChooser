@@ -208,7 +208,7 @@ def genAll(df):
     
 # plot a indicator
 import constDaytime as cd
-def plotIndicator(df, ind, maDays = [5, 20, 40], startShowPoint = cd.startShowing, endShowPoint = cd.end):
+def plotIndicator(df, ind, maDays = [5, 20, 40], startShowPoint = cd.startShowing, endShowPoint = cd.end, title = None):
     if not isinstance(df, str) :
         if ind == 'MA':
             if maDays != [5, 20, 40]:   
@@ -219,36 +219,49 @@ def plotIndicator(df, ind, maDays = [5, 20, 40], startShowPoint = cd.startShowin
                 if len(nameList) == 0 :
                     pass
                 elif len(nameList) == 1 :
-                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0]]].plot(
+                        grid = True, figsize = (10, 5), title = title)
                 elif len(nameList) == 2 :
-                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1]]].plot(
+                        grid = True, figsize = (10, 5), title = title)
                 elif len(nameList) == 3 :
-                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2]]].plot(
+                        grid = True, figsize = (10, 5), title = title)
                 elif len(nameList) == 4 :
-                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3]]].plot(
+                        grid = True, figsize = (10, 5), title = title)
                 elif len(nameList) == 5 :
-                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4]]].plot(
+                        grid = True, figsize = (10, 5), title = title)
                 elif len(nameList) == 6 :
-                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5]]].plot(
+                        grid = True, figsize = (10, 5), title = title)
                 elif len(nameList) == 7 :
-                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5],nameList[6]]].plot(grid = True, figsize = (10, 5))
+                    df.loc[startShowPoint : endShowPoint, ['Close',nameList[0],nameList[1],nameList[2],nameList[3],nameList[4],nameList[5],nameList[6]]].plot(
+                        grid = True, figsize = (10, 5), title = title)
             else :
                 #df.loc[startShowPoint : endShowPoint, ['Close', 'MA5', 'MA20', 'MA40']].plot(grid = True, figsize = (10, 5))
-                df.loc[startShowPoint : endShowPoint, ['Close', 'MA5', 'MA20']].plot(grid = True, figsize = (10, 5))
+                df.loc[startShowPoint : endShowPoint, ['Close', 'MA5', 'MA20']].plot(
+                    grid = True, figsize = (10, 5), title = title)
         elif ind == 'Bollinger':
-            df.loc[startShowPoint : endShowPoint, ['Close','bollinger upper','bollinger ave','bollinger lower']].plot(grid = True, figsize = (10, 5))
+            df.loc[startShowPoint : endShowPoint, ['Close','bollinger upper','bollinger ave','bollinger lower']].plot(
+                grid = True, figsize = (10, 5), title = title)
         elif ind == 'RS':
-            df.loc[startShowPoint : endShowPoint, ['Close', 'resistance', 'support']].plot(grid = True, figsize = (10, 5))
+            df.loc[startShowPoint : endShowPoint, ['Close', 'resistance', 'support']].plot(
+                grid = True, figsize = (10, 5), title = title)
         elif ind == 'MACD':
-            df.loc[startShowPoint : endShowPoint, ['dif', 'MACD']].plot(grid = True, figsize = (10, 5))
+            df.loc[startShowPoint : endShowPoint, ['dif', 'MACD']].plot(
+                grid = True, figsize = (10, 5), title = title)
         elif ind == 'RSI':
-            df.loc[startShowPoint : endShowPoint, ['RSI', '30 Line', '70 Line']].plot(grid = True, figsize = (10, 5))
+            df.loc[startShowPoint : endShowPoint, ['RSI', '30 Line', '70 Line']].plot(
+                grid = True, figsize = (10, 5), title = title)
         elif ind == 'Stochastic':
-            df.loc[startShowPoint : endShowPoint, ['k slow', 'd slow', 'j slow', '20 Line', '80 Line']].plot(grid = True, figsize = (10, 5))
+            df.loc[startShowPoint : endShowPoint, ['k slow', 'd slow', 'j slow', '20 Line', '80 Line']].plot(
+                grid = True, figsize = (10, 5), title = title)
         elif ind == 'Adj Close':
-            df['Adj Close'].plot(grid = True, figsize = (10, 5))
+            df['Adj Close'].plot(grid = True, figsize = (10, 5), title = title)
         elif ind == 'Close':
-            df['Close'].plot(grid = True, figsize = (10, 5))
+            df['Close'].plot(grid = True, figsize = (10, 5), title = title)
     else : pass
     
 # get data from yahoo api

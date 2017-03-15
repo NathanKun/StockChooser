@@ -8,18 +8,50 @@
     <title>Stock Chooser Show Result</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/show.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 
 <body>
-    <h1>Stock : {{ name }}</h1>
+    <h1 id = head>Titre : {{ name }}</h1>
     <div>
         <h3>Finance score:</h3>
         <table>
-            <tr><td>BNA</td> <td id = "BNA">{{ financeScore[0] }}</td></tr>
-            <tr><td>PER</td> <td id = "PER">{{ financeScore[1] }}</td></tr>
-            <tr><td>Dividende</td> <td id = "Dividende">{{ financeScore[2] }}</td></tr>
-            <tr><td>Rendement</td> <td id = "Rendement">{{ financeScore[3] }}</td></tr>
-            <tr><td>CA</td> <td id = "CA">{{ financeScore[4] }}</td></tr>
+            <th>Finance indicateur</th><th>2014</th><th>2015</th><th>2016</th><th>2017</th><th>2018</th><th>Moyenne de Taux croissant</th><th>Note de -1 à 1</th>
+            <tr><td>BNA</td> 
+                <td class="airbus">2.99</td><td class="airbus">3.42</td><td class="airbus">3.13</td><td class="airbus">3.54</td><td class="airbus">4.66</td><td class="airbus">1.223</td>
+                <td class="oreal">8.39</td><td class="oreal">5.84</td><td class="oreal">5.5</td><td class="oreal">6.87</td><td class="oreal">7.3</td><td class="oreal">0.987</td>
+                <td class="biome">3.42</td><td class="biome">2.8</td><td class="biome">4.42</td><td class="biome">5.22</td><td class="biome">5.89</td><td class="biome">1.176</td>
+                <td class="total">1.86</td><td class="total">2.21</td><td class="total">2.51</td><td class="total">4.24</td><td class="total">4.75</td><td class="total">1.283</td>
+                <td class="sopra">N/A</td><td class="sopra">N/A</td><td class="sopra">8.06</td><td class="sopra">9.45</td><td class="sopra">10.3</td><td class="sopra">1.131</td>
+                <td>{{ financeScore[0] }}</td></tr>
+            <tr><td>PER</td> 
+                <td class="airbus">13.8</td><td class="airbus">18.1</td><td class="airbus">20.6</td><td class="airbus">18.49</td><td class="airbus">13.82</td><td class="airbus">0.822</td>
+                <td class="oreal">16.6</td><td class="oreal">26.6</td><td class="oreal">31.5</td><td class="oreal">25</td><td class="oreal">23.5</td><td class="oreal">1.130</td>
+                <td class="biome">25.1</td><td class="biome">39.3</td><td class="biome">33.7</td><td class="biome">28.5</td><td class="biome">25.3</td><td class="biome">1.039</td>
+                <td class="total">27.7</td><td class="total">20.3</td><td class="total">20.4</td><td class="total">12</td><td class="total">10.8</td><td class="total">0.806</td>
+                <td class="sopra">N/A</td><td class="sopra">N/A</td><td class="sopra">13.93</td><td class="sopra">11.88</td><td class="sopra">10.9</td><td class="sopra">0.885</td>
+                <td>{{ financeScore[1] }}</td></tr>
+            <tr><td>Dividende</td> 
+                <td class="airbus">0.75</td><td class="airbus">1.3</td><td class="airbus">1.34</td><td class="airbus">1.46</td><td class="airbus">1.85</td><td class="airbus">1.178</td>
+                <td class="oreal">2.7</td><td class="oreal">3.1</td><td class="oreal">N/A</td><td class="oreal">3.58</td><td class="oreal">3.86</td><td class="oreal">1.127</td>
+                <td class="biome">1</td><td class="biome">1</td><td class="biome">1.09</td><td class="biome">1.22</td><td class="biome">1.37</td><td class="biome">1.083</td>
+                <td class="total">2.95</td><td class="total">2.65</td><td class="total">2.45</td><td class="total">2.63</td><td class="total">2.64</td><td class="total">0.975</td>
+                <td class="sopra">N/A</td><td class="sopra">N/A</td><td class="sopra">1.9</td><td class="sopra">2.12</td><td class="sopra">2.32</td><td class="sopra">1.105</td>
+                <td>{{ financeScore[2] }}</td></tr>
+            <tr><td>Rendement</td> 
+                <td class="airbus">1.34%</td><td class="airbus">2.10%</td><td class="airbus">2.07%</td><td class="airbus">2.27%</td><td class="airbus">2.87%</td><td class="airbus">1.180</td>
+                <td class="oreal">1.94%</td><td class="oreal">2%</td><td class="oreal">N/A</td><td class="oreal">2.08%</td><td class="oreal">2.25%</td><td class="oreal">1.050</td>
+                <td class="biome">1.17%</td><td class="biome">0.91%</td><td class="biome">0.73%</td><td class="biome">0.82%</td><td class="biome">0.92%</td><td class="biome">0.956</td>
+                <td class="total">5.74%</td><td class="total">5.91%</td><td class="total">4.78%</td><td class="total">5.16%</td><td class="total">5.18%</td><td class="total">0.980</td>
+                <td class="sopra">N/A</td><td class="sopra">N/A</td><td class="sopra">1.69%</td><td class="sopra">1.89%</td><td class="sopra">2.07%</td><td class="sopra">1.106%</td>
+                <td>{{ financeScore[3] }}</td></tr>
+            <tr><td>CA en MEUR</td> 
+                <td class="airbus">60,713</td><td class="airbus">64,450</td><td class="airbus">65,456</td><td class="airbus">68,109</td><td class="airbus">73,508</td><td class="airbus">1.049</td>
+                <td class="oreal">22532</td><td class="oreal">25257</td><td class="oreal">25837</td><td class="oreal">27561</td><td class="oreal">28913</td><td class="oreal">1.064</td>
+                <td class="biome">1698</td><td class="biome">1965</td><td class="biome">2104</td><td class="biome">2267</td><td class="biome">2418</td><td class="biome">1.093</td>
+                <td class="total">211987</td><td class="total">165357</td><td class="total">149743</td><td class="total">170101</td><td class="total">181497</td><td class="total">0.972</td>
+                <td class="sopra">2280</td><td class="sopra">3584</td><td class="sopra">3736</td><td class="sopra">3813</td><td class="sopra">3949</td><td class="sopra">1.167</td>
+                <td>{{ financeScore[4] }}</td></tr>
         </table>    
     </div>
         
@@ -52,21 +84,28 @@
         {% endautoescape %}
 
     <script>
-        /*window.onload = roundTableValue()
+        window.onload = addFinanceData();
 
-        function roundTableValue()
+        function addFinanceData()
         {
-            var BNA = document.getElementById("BNA");
-            var PER = document.getElementById("PER");
-            var Dividende = document.getElementById("Dividende");
-            var Rendement = document.getElementById("Rendement");
-            var CA = document.getElementById("CA");
-            BNA.innerHTML = Math.round({{ financeScore[0] }} * 1000) / 1000;
-            PER.innerHTML = Math.round({{ financeScore[1] }} * 1000) / 1000;
-            Dividende.innerHTML = Math.round({{ financeScore[2] }} * 1000) / 1000;
-            Rendement.innerHTML = Math.round({{ financeScore[3] }} * 1000) / 1000;
-            CA.innerHTML = Math.round({{ financeScore[4] }} * 1000) / 1000;
-        }*/
+            $('.airbus').hide();
+            $('.oreal').hide();
+            $('.biome').hide();
+            $('.total').hide();
+            $('.sopra').hide();
+            var name = document.getElementById("head").innerHTML.substr(8);
+            if (name == 'airbus'){
+                $('.airbus').show();
+            } else if (name == 'oreal'){
+                $('.oreal').show();
+            } else if (name == 'biomerieux'){
+                $('.biome').show();
+            } else if (name == 'total'){
+                $('.total').show();
+            } else if (name == 'sopra'){
+                $('.sopra').show();
+            }
+        }
         
         /*
         function updateTextInput(inputText, val) {
