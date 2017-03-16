@@ -133,7 +133,7 @@ def get_google_finance_intraday(ticker, period=60, days=1):
     return dfList
 
 if __name__ == '__main__':
-    intradayList = get_google_finance_intraday('SOP', 60, 20)
+    intradayList = get_google_finance_intraday('SOP', 60, 60)
     for item in intradayList:
         print(item.index[0].strftime('%d/%m/%Y'))
     '''

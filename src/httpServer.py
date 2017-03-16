@@ -62,22 +62,22 @@ def show(name=None):
             # get short term intraday data and generate indicators
             import googleFinanceIntraday as gfi
               
-            # get 15 days intraday data, periode 60s
+            # get 30 days intraday data, periode 60s
             if name == 'airbus':
-                intradayList = gfi.get_google_finance_intraday('AIR', 60, 20)
+                intradayList = gfi.get_google_finance_intraday('AIR', 60, 30)
             elif name == 'sopra':
-                intradayList = gfi.get_google_finance_intraday('SOP', 60, 20)
+                intradayList = gfi.get_google_finance_intraday('SOP', 60, 30)
             elif name == 'biomerieux':
-                intradayList = gfi.get_google_finance_intraday('BIM', 60, 20)
+                intradayList = gfi.get_google_finance_intraday('BIM', 60, 30)
             elif name == 'oreal':
-                intradayList = gfi.get_google_finance_intraday('OR', 60, 20)
+                intradayList = gfi.get_google_finance_intraday('OR', 60, 30)
             elif name == 'total':
-                intradayList = gfi.get_google_finance_intraday('FP', 60, 20)
+                intradayList = gfi.get_google_finance_intraday('FP', 60, 30)
             
             dateList = []
             for item in intradayList :
                 dateList.append(item.index[0].strftime('%d/%m/%Y')) # copy all dates in a list
-                #print(item.index[0].strftime('%d/%m/%Y'))             
+                print(item.index[0].strftime('%d/%m/%Y'))             
                             
             seletedDateTimeStr = showPeriod                         # the date and time selected by user
             seletedDateTime = datetime.strptime(seletedDateTimeStr, '%d/%m/%Y - %Hh%M') # parse to datetime object
