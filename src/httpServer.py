@@ -6,6 +6,8 @@ Created on 2017 2 11
 from genIndicator import plotIndicator
 from flask import Flask, url_for, redirect, render_template, request
 from _datetime import datetime
+from _ast import Try
+from warnings import catch_warnings
 #app = Flask(__name__, root_path = '/home/wwwroot/catprogrammer.com/stockchooser')
 app = Flask(__name__)
 app.debug = True
@@ -86,16 +88,22 @@ def show(name=None):
             
             #print(seletedDateStr)
             #print(dateList.index(seletedDateStr))
-            df = intradayList[dateList.index(seletedDateStr)]   # target dataframe, because intradayList and dateList have the same index
-            #gi.genAll(df)   # generate indicators
-            #print(df['Close'])
-            
-            # set start and end point
-            startShowPoint = df.index[0]    # type : timestamp
-            #endShowPoint = seletedDateTime.timestamp()
-            import pandas as pd
-            endShowPoint = pd.Timestamp(seletedDateTime)
-            #print(df.loc[startShowPoint:endShowPoint])
+            try:
+                df = intradayList[dateList.index(seletedDateStr)]   # target dataframe, because intradayList and dateList have the same index
+                #gi.genAll(df)   # generate indicators
+                #print(df['Close'])
+                
+                # set start and end point
+                startShowPoint = df.index[0]    # type : timestamp
+                #endShowPoint = seletedDateTime.timestamp()
+                import pandas as pd
+                endShowPoint = pd.Timestamp(seletedDateTime)
+                #print(df.loc[startShowPoint:endShowPoint])
+            except ValueError:
+                df = "Intraday history no more available.</br>"
+                startShowPoint = 0   # type : timestamp
+                endShowPoint = 0
+                
     
         # read scores from file
         import readFromFile as rff          
@@ -152,7 +160,11 @@ def show(name=None):
                                    raison = ssToShow.graphic['Reason'].as_matrix(), shortTermDateTimeOption = intradayTimeHtml, 
                                    seletedDateTimeStr = seletedDateTimeStr, criterionScore = ssToShow.criterion['Result'].as_matrix(), 
                                    finalScore = ssToShow.finalScore)
-            
+        elif df == "Intraday history no more available.</br>":
+            return render_template('stock.html', name = name, fig = [df, df, df, df, df], score = ssToShow.graphic['Score'].as_matrix(), 
+                                   raison = ssToShow.graphic['Reason'].as_matrix(), shortTermDateTimeOption = intradayTimeHtml, 
+                                   seletedDateTimeStr = seletedDateTimeStr, criterionScore = ssToShow.criterion['Result'].as_matrix(), 
+                                   finalScore = ssToShow.finalScore)
         else :
             return render_template('readError.html', name = name)
     
