@@ -267,20 +267,20 @@ def plotIndicator(df, ind, maDays = [5, 20, 40], startShowPoint = cd.startShowin
 # get data from yahoo api
 def readDataFromNet(stock):
     from pandas_datareader import data      # for importing data
-    import constDaytime as cd
+    import fix_yahoo_finance
     if stock == 'airbus':
-        df = data.DataReader("AIR.PA", "yahoo", cd.start, cd.end) 
+        df = data.get_data_yahoo("AIR.PA", cd.start, cd.end) 
     elif stock == 'sopra':
-        df = data.DataReader("SOP.PA", "yahoo", cd.start, cd.end)
+        df = data.get_data_yahoo("SOP.PA", cd.start, cd.end)
     elif stock == 'biomerieux':
-        df = data.DataReader("BIM.PA", "yahoo", cd.start, cd.end)
+        df = data.get_data_yahoo("BIM.PA", cd.start, cd.end)
     elif stock == 'oreal':
-        df = data.DataReader("OR.PA", "yahoo", cd.start, cd.end)
+        df = data.get_data_yahoo("OR.PA", cd.start, cd.end)
     elif stock == 'total':
-        df = data.DataReader("FP.PA", "yahoo", cd.start, cd.end)
+        df = data.get_data_yahoo("FP.PA", cd.start, cd.end)
     else:
         try :
-            df = data.DataReader(stock, "yahoo", cd.start, cd.end)
+            df = data.get_data_yahoo(stock, cd.start, cd.end)
         except :
             df = "Read data failed."    # read from yahoo failed
     return df
